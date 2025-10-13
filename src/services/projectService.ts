@@ -16,7 +16,7 @@ export async function updateProject(projectId: string, project: Project) {
 }
 
 export async function getProjects() {
-  return apiClient<PagedResponse<Project>>(`/projects/`, {
+  return apiClient<PagedResponse<Project, "projects">>(`/projects/`, {
     method: "GET",
   });
 }

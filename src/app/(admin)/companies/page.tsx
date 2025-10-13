@@ -97,12 +97,12 @@ export default function CompaniesPage() {
 
                       <TableCell className="text-[#a3aed0]">
                         {" "}
-                        {company.business_type}
+                        {company.business_type.name}
                       </TableCell>
 
                       <TableCell className="text-[#a3aed0]">
                         {" "}
-                        {company.size}
+                        {company.size?.display_name}
                       </TableCell>
 
                       <TableCell>
