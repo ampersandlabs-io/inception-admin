@@ -5,12 +5,12 @@ import { ProjectCard } from "@/components/project-card";
 import { EmptyState } from "@/components/empty-state";
 import { Folder, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { CreateProjectModal } from "@/sections/projects/create-project-modal";
 import { useProjects } from "@/hooks/useProjects";
 
 export default function ProjectPage() {
-  const { projects, loading, refreshProjects } = useProjects();
+
+  const { projects, loading } = useProjects();
   const [open, setOpen] = useState(false);
 
   return (

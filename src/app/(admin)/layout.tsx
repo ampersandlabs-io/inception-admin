@@ -3,10 +3,10 @@ import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/shared/header";
 import type React from "react";
 
-import { useAuth } from "@clerk/nextjs";
-import { setTokenProvider } from "@/lib/apiClient";
-import { useEffect } from "react";
-import { signInWithClerk } from "@/services/authService";
+// import { useAuth } from "@clerk/nextjs";
+// import { setTokenProvider } from "@/lib/apiClient";
+// import { useEffect } from "react";
+// import { signInWithClerk } from "@/services/authService";
 
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server"; // or your auth check
@@ -18,7 +18,7 @@ export default async function AdminLayout({
 }) {
   // const { getToken, isSignedIn, isLoaded } = useAuth();
 
-  // // register the provider once
+  // register the provider once
   // useEffect(() => {
   //   if (!isLoaded || !isSignedIn) return;
 

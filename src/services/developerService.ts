@@ -2,13 +2,13 @@ import { apiClient } from "@/lib/apiClient";
 import { DeveloperProfile, PagedResponse } from "@/types";
 
 export async function getDevelopers() {
-  return apiClient<PagedResponse<DeveloperProfile>>(`/admin/developers/`, {
+  return apiClient<PagedResponse<DeveloperProfile, "developers">>(`/admin/developers/`, {
     method: "GET",
   });
 }
 
 export async function getDeveloperById(developerId: string) {
-  return apiClient<[]>(`/admin/developers/${developerId}/`, {
+  return apiClient<DeveloperProfile>(`/admin/developers/${developerId}/`, {
     method: "GET",
   });
 }

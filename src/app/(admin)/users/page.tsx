@@ -17,7 +17,6 @@ import { getUsers } from "@/services/userService";
 import { User } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-// import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
 export default function UsersPage() {
 

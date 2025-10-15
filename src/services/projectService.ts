@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
-import { PagedResponse, Project } from "@/types";
+import { DeveloperProfile, PagedResponse, Project } from "@/types";
+import { ProjectBid } from "@/types/projectBid";
 
 export async function createProject(project: Project) {
   return apiClient<unknown>(`/projects`, {
@@ -17,6 +18,24 @@ export async function updateProject(projectId: string, project: Project) {
 
 export async function getProjects() {
   return apiClient<PagedResponse<Project, "projects">>(`/projects/`, {
+    method: "GET",
+  });
+}
+
+export async function getProjectById(projectId: string) {
+  return apiClient<Project>(`/projects/${projectId}`, {
+    method: "GET",
+  });
+}
+
+export async function getDevelopersAssignedToProject(projectId: string) {
+  return apiClient<DeveloperProfile[]>(`/projects/${projectId}/developers`, {
+    method: "GET",
+  });
+}
+
+export async function getProjectBids(projectId: string) {
+  return apiClient<ProjectBid[], "bids">(`/projects/${projectId}/bids`, {
     method: "GET",
   });
 }

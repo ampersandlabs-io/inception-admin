@@ -16,4 +16,5 @@ export interface Company {
   is_verified: boolean;
   created_at: string;
   updated_at: string;
+  status: string;
 }

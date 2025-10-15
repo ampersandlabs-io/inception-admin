@@ -14,32 +14,16 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { CreateCompanyModal } from "@/sections/companies/create-company-modal";
-import { fetchCompanies } from "@/services/companyService";
 import { EmptyState } from "@/components/empty-state";
+import { useCompany } from "@/hooks/useCompany";
 
 export default function CompaniesPage() {
 
+  // const [loading, setLoading] = useState(true);
+  // const [companies, setCompanies] = useState<Company[] | null>(null);
+
+  const { companies, loading } = useCompany();
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [companies, setCompanies] = useState<Company[] | null>(null);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      const companyData = await fetchCompanies();
-      setCompanies(companyData.companies);
-      console.log(`companies ==> ${JSON.stringify(companyData)}`);
-    } catch (error) {
-      setCompanies([]);
-      console.log("No existing company profile", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
  if (loading) {
     return (
@@ -104,7 +88,6 @@ export default function CompaniesPage() {
                         {" "}
                         {company.size?.display_name}
                       </TableCell>
-
                       <TableCell>
                         <Button
                           variant="ghost"

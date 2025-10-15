@@ -1,31 +1,30 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { Globe, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { useAdminGate } from "@/hooks/useAdminGate";
 
 export default function HomePage() {
   
-  const { isLoaded, isSignedIn } = useUser();
-  const router = useRouter();
+  const { checking, error } = useAdminGate();
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      router.push("/dashboard");
-    } else {
-      router.push("sign-in");
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  if (!isLoaded) {
+   if (checking) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-12 h-12 animate-spin" />
+        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
+  }
+
+  // Nothing to render since redirection happens automatically
+  return null;
 
   // return (
   //   <div className="min-h-screen">
