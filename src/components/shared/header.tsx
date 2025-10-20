@@ -27,7 +27,7 @@ export function Header({ isAuth = false }: HeaderProps) {
       // 2. When backend confirms, call Clerk signOut
       await clerkSignOut();
 
-      sessionStorage.clear();
+      localStorage.clear();
 
       router.push("/sign-in");
     } catch (err) {

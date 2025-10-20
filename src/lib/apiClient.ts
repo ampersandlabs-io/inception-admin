@@ -12,11 +12,11 @@ interface ApiOptions<TBody> {
   headers?: Record<string, string>;
 }
 
-let tokenProvider: (() => Promise<string | null>) | null = null;
+// let tokenProvider: (() => Promise<string | null>) | null = null;
 
-export function setTokenProvider(fn: () => Promise<string | null>) {
-  tokenProvider = fn;
-}
+// export function setTokenProvider(fn: () => Promise<string | null>) {
+//   tokenProvider = fn;
+// }
 
 export async function apiClient<TResponse, TBody = unknown>(
   endpoint: string,

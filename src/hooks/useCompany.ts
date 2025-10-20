@@ -23,7 +23,7 @@ export function useCompany() {
   
     useEffect(() => {
       fetchCompanies();
-    }, []);
+    }, [fetchCompanies]);
   
     return {
       companies,

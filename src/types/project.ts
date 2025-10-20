@@ -1,5 +1,5 @@
 import { Company } from "./company";
-import { ProjectType, ReferenceData, Scope, TechStack } from "./reference";
+import { ReferenceData, Scope, TechStack } from "./reference";
 
 export interface Project {
   id: string;
@@ -20,7 +20,7 @@ export interface Project {
   hourly_rate_max?: number;
   currency: string;
   tech_stack?: string[];
-  project_types?: ProjectType[];
+  project_types?: ReferenceData[];
   client_id: string;
   company_id?: number;
   company: Company

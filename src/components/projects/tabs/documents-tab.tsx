@@ -1,7 +1,7 @@
 "use client"
 
 import { Project } from "@/types"
-import { MoreHorizontal, Eye, Download } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 
 const documents = [
   {
@@ -27,11 +27,11 @@ const documents = [
 ]
 
 
-interface LegalTabProps {
+interface DocumentsTabProps {
   project: Project
 }
 
-export function LegalTab({ project }: LegalTabProps) {
+export function DocumentsTab({ project }: DocumentsTabProps) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">

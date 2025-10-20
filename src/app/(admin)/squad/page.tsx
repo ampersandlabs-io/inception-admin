@@ -3,46 +3,20 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 import {
   Loader2,
   GroupIcon,
 } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
-import { getDevelopers } from "@/services/developerService";
 import { CreateSquadModal } from "@/sections/squad/create-company-modal";
-import { DeveloperProfile } from "@/types";
 import { SquadCard } from "@/components/projects/cards/squad-card";
 import { useSquad } from "@/hooks/useSquad";
 
 export default function SquadPage() {
 
-  // const router = useRouter();
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string>("");
-  // const [developers, setDevelopers] = useState<DeveloperProfile[]>([]);
   const [open, setOpen] = useState(false);
-
-  // useEffect(() => {
-  //   fetchDevelopers();
-  // }, []);
-
-  // const fetchDevelopers = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const developersData = await getDevelopers();
-  //     setDevelopers(developersData.developers);
-  //     console.log(`Squad ==> ${JSON.stringify(developersData)}`);
-  //   } catch (error) {
-  //     setDevelopers([]);
-  //     setError(`${error}`);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const { squads: developers, loading } = useSquad();
 
   if (loading) {

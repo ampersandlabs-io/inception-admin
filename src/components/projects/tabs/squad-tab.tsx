@@ -1,26 +1,17 @@
 "use client"
 
 import { useEffect, useState } from "react"
-// import { OutlineButton } from "@/components/ui/outline-button"
-// import { BidsCard } from "@/components/client/projects/cards/bids-card"
-// import { SquadCard } from "@/components/client/projects/cards/squad-card"
-// import { FilledButton } from "@/components/ui/filled-button"
-// import { useBids, useAcceptBid, useRejectBid } from "@/lib/queries/bids"
 import { Button } from "@/components/ui/button"
 import {
-  CheckCircle,
   XCircle,
-  Clock,
   DollarSign,
   User,
   Calendar,
   Star,
   MessageSquare,
-  Loader2
 } from "lucide-react"
 
 import { Project } from "@/types"
-import { useSquad } from "@/hooks/useSquad"
 import { useProjects } from "@/hooks/useProjects"
 import { formatCurrency } from "@/utils/util"
 import { useProjectBid } from "@/hooks/useProjectBid"

@@ -1,13 +1,13 @@
 import { useProjects } from "@/hooks/useProjects";
-import { Calendar, CheckCircle, Clock } from "lucide-react";
+import { Calendar, Clock, Coins, Currency } from "lucide-react";
 import { useEffect, useState } from "react";
-import { LegalTab } from "./tabs/legal-tab";
+import { DocumentsTab } from "./tabs/documents-tab";
 import { TeamTab } from "./tabs/team-tab";
 import { MilestonesTab } from "./tabs/milestones-tab";
 import { SquadTab } from "./tabs/squad-tab";
 import { OverviewTab } from "./tabs/overview-tab";
 import { DEFAULT_CURRENCY } from "@/constants";
-import { formatBudget, formatDate, getProjectStatusText } from "@/utils/util";
+import { formatBudget, formatDate } from "@/utils/util";
 import { ProjectStatus } from "./project-status";
 
 interface ProjectDetailsProps {
@@ -75,7 +75,7 @@ export function ProjectDetails({ projectId }: ProjectDetailsProps) {
               </h1>
 
                 <ProjectStatus status={project.status} />
-                
+
             </div>
             <p className="text-[#8f9bba] text-[14px] mb-4">
               {/* <CompanyName companyId={project.company_id} /> */}
@@ -84,8 +84,8 @@ export function ProjectDetails({ projectId }: ProjectDetailsProps) {
             {/* Project Details Summary */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="flex items-center gap-3">
-                {/* <DollarSign className="h-5 w-5 text-[#4318ff]" /> */}
-                {project.currency || "$"}
+                <Coins className="h-5 w-5 text-[#4318ff]" />
+                {/* {project.currency || "$"} */}
                 <div>
                   <p className="text-sm text-[#8f9bba]">Budget</p>
                   <p className="font-semibold text-[#2b3674]">
@@ -151,7 +151,7 @@ export function ProjectDetails({ projectId }: ProjectDetailsProps) {
       <div className="p-8 pt-6">
         {activeTab === "Overview" && <OverviewTab project={project} />}
         {activeTab === "Squad" && <SquadTab project={project} />}
-        {activeTab === "Documents" && <LegalTab project={project} />}
+        {activeTab === "Documents" && <DocumentsTab project={project} />}
         {activeTab === "Team" && <TeamTab project={project} />}
         {activeTab === "Milestones" && <MilestonesTab project={project} />}
       </div>

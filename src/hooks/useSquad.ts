@@ -13,7 +13,7 @@ export function useSquad() {
     try {
       const squadsData = await getDevelopers();
       console.log(`squadsData ==> ${JSON.stringify(squadsData)}`);
-      setSquads(squadsData.developers);
+      setSquads(squadsData.items);
     } catch (error) {
       console.error("Failed to fetch projects:", error);
       setSquads([]);

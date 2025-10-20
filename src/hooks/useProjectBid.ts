@@ -24,7 +24,7 @@ export function useProjectBid(projectId: string) {
 
   useEffect(() => {
     fetchProjectsBid(projectId);
-  }, [fetchProjectsBid]);
+  }, [fetchProjectsBid, projectId]);
 
   return {
     projectBids,

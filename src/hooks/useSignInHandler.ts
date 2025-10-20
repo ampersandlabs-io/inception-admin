@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSignIn, useAuth, useClerk, useUser } from "@clerk/nextjs";
-import { setTokenProvider } from "@/lib/apiClient";
+import { useSignIn, useAuth, useUser } from "@clerk/nextjs";
 import { signInWithClerk } from "@/services/authService";
 
 export function useSignInHandler() {
@@ -47,7 +46,7 @@ export function useSignInHandler() {
         if (token) {
           // Sign in with cl
           await signInWithClerk(token);
-          setTokenProvider(async () => await getToken());
+          // setTokenProvider(async () => await getToken());
           localStorage.setItem("token", token);
         }
         // Redirect to your gate route

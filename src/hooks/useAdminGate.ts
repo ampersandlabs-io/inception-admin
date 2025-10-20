@@ -43,13 +43,13 @@ export function useAdminGate({
 
             console.log(`isAdmin ==> ${isAdmin}`);
 
-            router.replace(adminRedirect);
+            // router.replace(adminRedirect);
     
-            // if (isAdmin) {
-            //   router.replace(adminRedirect);
-            // } else {
-            //   router.replace(unauthorizedRedirect);
-            // }
+            if (isAdmin) {
+              router.replace(adminRedirect);
+            } else {
+              router.replace(unauthorizedRedirect);
+            }
           } catch (err: any) {
             console.error("Admin verification failed:", err);
             setError(err?.message || "Verification failed");

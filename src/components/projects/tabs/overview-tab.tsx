@@ -11,18 +11,19 @@ export function OverviewTab({ project }: OverviewTabProps) {
 
   return (
     <div className="space-y-6">
-      {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        {/* Project Description */}
         <div>
-          <h3 className="text-[#8f9bba] text-sm font-medium mb-1">Project Budget</h3>
-          <p className="text-[#2b3674] text-[32px] font-bold">
-            {formatBudget(project.budget_amount || 0, project.budget_currency || "$")}
+        <h3 className="text-[#2b3674] text-xl font-bold mb-4">Project Description</h3>
+          <p className="text-[#8f9bba] leading-relaxed text-[15px]">
+            {project.description || 'No description provided for this project.'}
           </p>
         </div>
 
         <div>
-          <h3 className="text-[#8f9bba] text-sm font-medium mb-1">Experience Level</h3>
-          <p className="text-[#2b3674] text-[32px] font-bold">{project.experience_level!!.name}</p>
+          <h3 className="text-[#2b3674] text-xl font-bold mb-4">Experience Level</h3>
+          <p className="text-[#8f9bba] leading-relaxed text-[15px]">{project.experience_level!!.name}</p>
         </div>
       </div>
 
@@ -30,7 +31,7 @@ export function OverviewTab({ project }: OverviewTabProps) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Tech Stack Section */}
         <div>
-          <h3 className="text-[#2b3674] text-xl font-bold mb-6">Tech Stack</h3>
+          <h3 className="text-[#2b3674] text-xl font-bold mb-4">Tech Stack</h3>
 
           <div className="space-y-4">
             {project.tech_stacks.length > 0 ? (
@@ -51,7 +52,7 @@ export function OverviewTab({ project }: OverviewTabProps) {
 
           {/* Project Types */}
           <div className="mt-6">
-            <h4 className="text-[#2b3674] font-semibold mb-3">Project Types</h4>
+            <h4 className="text-[#2b3674] text-xl font-bold mb-4">Project Types</h4>
             <div className="flex flex-wrap gap-2">
               {project.project_types!!.map((type) => (
                 <span
@@ -86,17 +87,11 @@ export function OverviewTab({ project }: OverviewTabProps) {
             )}
           </div>
         </div>
-
-        {/* Project Description */}
+       
         <div>
-          <h3 className="text-[#2b3674] text-xl font-bold mb-4">Project Description</h3>
-          <p className="text-[#8f9bba] leading-relaxed text-[15px]">
-            {project.description || 'No description provided for this project.'}
-          </p>
-
           {/* Category Information */}
           <div className="mt-6">
-            <h4 className="text-[#2b3674] font-semibold mb-2">Category</h4>
+            <h4 className="text-[#2b3674] text-xl font-bold mb-4">Category</h4>
             <p className="text-[#8f9bba] text-sm">{project.category!!.name}</p>
             {project.category!!.description && (
               <p className="text-[#8f9bba] text-xs mt-1">{project.category!!.description}</p>
