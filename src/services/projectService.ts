@@ -39,3 +39,22 @@ export async function getProjectBids(projectId: string) {
     method: "GET",
   });
 }
+
+export async function publishProjectRequest(projectId: string) {
+  return apiClient<Project>(`/projects/${projectId}/publish`, {
+    method: "POST",
+  });
+}
+
+export async function deleteProjectRequest(projectId: string) {
+  return apiClient<Project>(`/projects/${projectId}/`, {
+    method: "DELETE",
+  });
+}
+
+export async function updateProjectStatus(projectId: string, status: string) {
+  return apiClient<Project>(`/projects/${projectId}/`, {
+    method: "PUT",
+    body: { status: status },
+  });
+}

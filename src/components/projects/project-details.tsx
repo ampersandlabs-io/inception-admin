@@ -9,6 +9,7 @@ import { OverviewTab } from "./tabs/overview-tab";
 import { DEFAULT_CURRENCY } from "@/constants";
 import { formatBudget, formatDate } from "@/utils/util";
 import { ProjectStatus } from "./project-status";
+import { SettingsTab } from "./tabs/settings-tab";
 
 interface ProjectDetailsProps {
   projectId: string;
@@ -22,9 +23,6 @@ export function ProjectDetails({ projectId }: ProjectDetailsProps) {
   useEffect(() => {
     getProjectById(projectId);
   }, [])
-
-  // const { bids, isLoading: bidsLoading } = useBids(projectId);
-  // const { squads, isLoading: squadLoading } = useActiveSquad(projectId);
 
   if (loading) {
     return (
@@ -154,6 +152,7 @@ export function ProjectDetails({ projectId }: ProjectDetailsProps) {
         {activeTab === "Documents" && <DocumentsTab project={project} />}
         {activeTab === "Team" && <TeamTab project={project} />}
         {activeTab === "Milestones" && <MilestonesTab project={project} />}
+        {activeTab === "Settings" && <SettingsTab project={project} />}
       </div>
     </div>
   );

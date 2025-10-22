@@ -10,7 +10,7 @@ import { useProjects } from "@/hooks/useProjects";
 
 export default function ProjectPage() {
 
-  const { projects, loading } = useProjects();
+  const { projects, loading, publishProject, deleteProject, editProject } = useProjects();
   const [open, setOpen] = useState(false);
 
   return (
@@ -24,15 +24,21 @@ export default function ProjectPage() {
 
           {loading ? (
             <div
-              role="status"
               className="min-h-screen flex items-center justify-center"
+              role="status"
             >
               <Loader2 className="w-12 h-12 animate-spin" />
             </div>
           ) : projects.length > 0 ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard 
+                key={project.id} 
+                project={project}
+                onPublish={publishProject}
+                onEdit={editProject}
+                onDelete={deleteProject}
+                />
               ))}
             </div>
           ) : (

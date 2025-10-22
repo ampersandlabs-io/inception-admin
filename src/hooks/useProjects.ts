@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { getDevelopersAssignedToProject, getProjectById, getProjects } from "@/services/projectService";
+import { deleteProjectRequest, getDevelopersAssignedToProject, getProjectById, getProjects, publishProjectRequest } from "@/services/projectService";
 import { DeveloperProfile, Project } from "@/types";
 
 export function useProjects() {
@@ -50,6 +50,34 @@ export function useProjects() {
     }
   }, [])
 
+  const publishProject = useCallback(async (projectId: string) => {
+    try {
+      await publishProjectRequest(projectId);
+      setProjects(prev =>
+        prev.map(p =>
+          p.id === projectId ? { ...p, status: "ACTIVE" } : p
+        )
+      );
+    } catch (error) {
+      console.error("Failed to publish project:", error);
+    }
+  }, [fetchProjects]);
+
+  const deleteProject = useCallback(async (projectId: string) => {
+    try {
+      await deleteProjectRequest(projectId); // ✅ create this API fn in services
+      await fetchProjects();
+    } catch (error) {
+      console.error("Failed to delete project:", error);
+    }
+  }, [fetchProjects]);
+
+  const editProject = useCallback((projectId: string) => {
+    // navigation usually happens here — do NOT do API here.
+    // we just expose it for UI
+    // router.push(`/projects/${projectId}/edit`)
+    console.log("Edit project:", projectId);
+  }, []);
 
   useEffect(() => {
     fetchProjects();
@@ -63,6 +91,10 @@ export function useProjects() {
     getProjectById: fetchProjectById,
   
     projectSquads,
-    fetchDevelopersAssignedToProject
+    fetchDevelopersAssignedToProject,
+
+    publishProject,
+    deleteProject,
+    editProject,
   };
 }

@@ -1,6 +1,7 @@
 import { Company } from "./company";
 import { ReferenceData, Scope, TechStack } from "./reference";
 
+type ProjectStatus = "Draft" | "Submitted" | "In Bidding" | "Active" | "On Hold" | "Complete" | "Cancelled";
 export interface Project {
   id: string;
   title: string;
