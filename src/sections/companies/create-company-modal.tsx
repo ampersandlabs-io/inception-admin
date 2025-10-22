@@ -9,9 +9,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Briefcase, Globe, Loader2, MapPin, Save, Users } from "lucide-react";
-import { Company } from "@/types";
+import { Company, CompanySize } from "@/types";
 import FileUpload from "@/components/file-upload";
-import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,13 +19,13 @@ import { createCompany, updateCompany } from "@/services/companyService"
 
 export function CreateCompanyModal({ open, setOpen }: { open: boolean; setOpen: (v: boolean) => void }) {
 
-  const router = useRouter();
+  // const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [company, setCompany] = useState<Company | null>(null);
-  const [companySizes, setCompanySizes] = useState<any[]>([]);
-  const [businessTypes, setBusinessTypes] = useState<any[]>([]);
+  const [company] = useState<Company | null>(null);
+  const [companySizes] = useState<CompanySize[]>([]);
+  const [businessTypes] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -40,7 +39,7 @@ export function CreateCompanyModal({ open, setOpen }: { open: boolean; setOpen: 
   });
 
   const [uploadedLogo, setUploadedLogo] = useState<string[]>([]);
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
 
   const handleLogoUpload = async (files: File[]) => {
     // In a real app, this would upload to a backend service
@@ -61,36 +60,37 @@ export function CreateCompanyModal({ open, setOpen }: { open: boolean; setOpen: 
     setSaving(true);
 
     try {
-      const data: any = {
+      const data: unknown = {
         name: formData.name,
         description: formData.description || "",
         website: formData.website || "",
         location_country: formData.location_country || "",
         state_region: formData.state_region || "",
         city: formData.city || "",
+        size_id: ""
       };
 
       // Only add these fields if they have values
-      if (formData.size_id) {
-        data.size_id = parseInt(formData.size_id);
-      }
-      if (formData.business_type_id) {
-        data.business_type_id = parseInt(formData.business_type_id);
-      }
-      if (uploadedLogo[0]) {
-        data.logo = uploadedLogo[0];
-      }
+      // if (formData.size_id) {
+      //   data.size_id = parseInt(formData.size_id);
+      // }
+      // if (formData.business_type_id) {
+      //   data.business_type_id = parseInt(formData.business_type_id);
+      // }
+      // if (uploadedLogo[0]) {
+      //   data.logo = uploadedLogo[0];
+      // }
 
       console.log("Saving company with data:", data);
 
       if (company) {
         // Update existing company
         // await api.companies.update(company.id, data);
-        await updateCompany(company.id, data);
+        await updateCompany(company.id, data as Company);
       } else {
         // Create new company
-        // await api.companies.create(data);
-       const response = await createCompany(data);
+       const response = await createCompany(data as Company);
+       console.log(`response ==> ${JSON.stringify(response)}`);
 
        setOpen(false);
       }

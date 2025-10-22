@@ -1,18 +1,16 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { StatsCard } from "@/components/stats-card"
-import { ProjectCard } from "@/components/project-card"
-import { LeaderBoard } from "@/components/leader-board"
-import { GetStartedChecklist } from "@/components/get-started-checklist"
-import { EmptyState } from "@/components/empty-state"
-import { TrendingUp, CheckCircle, Folder, Clock } from "lucide-react"
-import { getDashboardStats } from "@/services/dashboardService"
-import { DashboardStats } from "@/types"
+import { useEffect, useState } from "react";
+import { StatsCard } from "@/components/stats-card";
+import { ProjectCard } from "@/components/project-card";
+import { EmptyState } from "@/components/empty-state";
+import { TrendingUp, CheckCircle, Folder, Clock, Loader2 } from "lucide-react";
+import { getDashboardStats } from "@/services/dashboardService";
+import { DashboardStats } from "@/types";
+import { LeaderBoard } from "@/sections/dashboard/leader-board";
 
 export default function DashboardPage() {
-
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [dashboard, setDashboard] = useState<DashboardStats>();
 
   useEffect(() => {
@@ -27,12 +25,13 @@ export default function DashboardPage() {
       setDashboard(dashboardData);
     } catch (error) {
       // setDashboard(null);
+      console.log(`${error}`);
     } finally {
       setLoading(false);
     }
   };
-  
-  const [showPopulatedData, setShowPopulatedData] = useState(false)
+
+  const [showPopulatedData] = useState(false);
 
   const projects = showPopulatedData
     ? [
@@ -58,28 +57,7 @@ export default function DashboardPage() {
           currentBid: "0.56 ETH",
         },
       ]
-    : []
-
-  const recentProjects =[
-        {
-          title: "Swipe Circles",
-          author: "Peter Will",
-          currentBid: "2.30 ETH",
-          gradientClass: "project-gradient-4",
-        },
-        {
-          title: "Colorful Heaven",
-          author: "Mark Benjamin",
-          currentBid: "1.30 ETH",
-          gradientClass: "project-gradient-5",
-        },
-        {
-          title: "3D Cubes Art",
-          author: "Manny Gates",
-          currentBid: "6.58 ETH",
-          gradientClass: "project-gradient-6",
-        },
-      ]
+    : [];
 
   const taskHistory = showPopulatedData
     ? [
@@ -105,7 +83,7 @@ export default function DashboardPage() {
           gradientClass: "project-gradient-2",
         },
       ]
-    : []
+    : [];
 
   const mockLeaders = [
     { name: "M", username: "@maddison_c21", tokens: 9821 },
@@ -116,75 +94,107 @@ export default function DashboardPage() {
     { name: "V", username: "@venus.sys", tokens: 3152 },
     { name: "E", username: "@ape.vpp8", tokens: 2907 },
     { name: "L", username: "@leon_pwrr", tokens: 2309 },
-  ]
+  ];
 
-  // const mockChecklist = [
-  //   {
-  //     title: "Complete Profile",
-  //     subtitle: "Submit test to accept and place bids",
-  //     completed: true,
-  //   },
-  //   {
-  //     title: "Take Test",
-  //     subtitle: "Submit test based on your skillset",
-  //     completed: false,
-  //   },
-  //   {
-  //     title: "Payout",
-  //     subtitle: "Provide details of how you wish to be paid",
-  //     completed: false,
-  //   },
-  // ]
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-12 h-12 animate-spin" />
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-12 gap-6">
-    <div className="col-span-12">
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-6 mb-8">
-        <StatsCard title="Total Projects" value={dashboard?.total_projects ?? 0} subtitle={dashboard?.growth_rate_projects ?? "-"} icon={TrendingUp} iconBg="bg-[#4318ff]" />
-        <StatsCard title="Total Squad" value={dashboard?.total_developers ?? 0} icon={CheckCircle} iconBg="bg-[#4318ff]" />
-        <StatsCard title="Total Companies" value={dashboard?.total_companies ?? 0} icon={Folder} iconBg="bg-[#4318ff]" />
-        <StatsCard title="Total Projects" value={dashboard?.total_companies ?? 0} icon={Folder} iconBg="bg-[#4318ff]" />
-      </div>
-
-      {/* Projects */}
-      <div className="mb-8">
-        <h3 className="text-xl font-bold text-[#2b3674] mb-6">Projects</h3>
-        {projects.length > 0 ? (
-          <div className="grid grid-cols-3 gap-6">
-            {projects.map((project, i) => <ProjectCard key={i} {...project} />)}
+    <div className="">
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-12">
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-6 mb-8">
+            <StatsCard
+              title="Total Projects"
+              value={dashboard?.total_projects ?? 0}
+              subtitle={dashboard?.growth_rate_projects ?? "-"}
+              icon={TrendingUp}
+              iconBg="bg-[#4318ff]"
+            />
+            <StatsCard
+              title="Total Squad"
+              value={dashboard?.total_developers ?? 0}
+              icon={CheckCircle}
+              iconBg="bg-[#4318ff]"
+            />
+            <StatsCard
+              title="Total Companies"
+              value={dashboard?.total_companies ?? 0}
+              icon={Folder}
+              iconBg="bg-[#4318ff]"
+            />
+            <StatsCard
+              title="Total Projects"
+              value={dashboard?.total_companies ?? 0}
+              icon={Folder}
+              iconBg="bg-[#4318ff]"
+            />
           </div>
-        ) : (
-          <EmptyState
-            icon={Folder}
-            title="You have no active projects"
-            description="Place a bid or get invited to join a project"
-            actionText="Browse projects"
-            onAction={() => console.log("Browse projects")}
-          />
-        )}
-      </div>
-    </div>
-
-    <div className="col-span-4 space-y-6">
-      {/* {dashboard?.recent_activities && <GetStartedChecklist items={mockChecklist} /> } */}
-
-      <LeaderBoard leaders={mockLeaders} />
-
-      <div className="bg-white rounded-2xl p-6 border border-[#e0e5f2]">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="font-bold text-[#2b3674] text-lg">Task History</h3>
-          <button className="text-[#4318ff] text-sm font-medium">See all</button>
         </div>
-        {taskHistory.length > 0 ? (
-          <div className="space-y-2">
-            {taskHistory.map((task, i) => <div key={i}>{task.title}</div>)}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Projects */}
+        <div className="space-y-">
+          <div className="bg-white rounded-2xl p-6 border border-[#e0e5f2]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-bold text-[#2b3674] text-lg">Projects</h3>
+              <button className="text-[#4318ff] text-sm font-medium">
+                See all
+              </button>
+            </div>
+            {projects.length > 0 ? (
+              <div className="grid grid-cols-3 gap-6">
+                {projects.map((project, i) => (
+                  <ProjectCard key={i} {...project} />
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                icon={Clock}
+                title="You have no tasks"
+                description="Place a bid or get invited to join a project"
+              />
+            )}
           </div>
-        ) : (
-          <EmptyState icon={Clock} title="You have no tasks" description="Place a bid or get invited to join a project" />
-        )}
+        </div>
+
+        {/* Leader */}
+        <div className="space-y-6">
+          <LeaderBoard leaders={mockLeaders} />
+        </div>
+
+        {/* 🟦 Task History Section */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-2xl p-6 border border-[#e0e5f2]">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-bold text-[#2b3674] text-lg">Task History</h3>
+              <button className="text-[#4318ff] text-sm font-medium">
+                See all
+              </button>
+            </div>
+            {taskHistory.length > 0 ? (
+              <div className="space-y-2">
+                {taskHistory.map((task, i) => (
+                  <div key={i}>{task.title}</div>
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                icon={Clock}
+                title="You have no tasks"
+                description="Place a bid or get invited to join a project"
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  )
+  );
 }

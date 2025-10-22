@@ -1,192 +1,78 @@
-// import Link from "next/link"
-// import { Button } from "@/components/ui/button"
-// import { AmpersandLogo } from "@/components/ampersand-logo"
+"use client";
 
-// export default function HomePage() {
-//   return (
-//     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-//       <div className="max-w-md w-full space-y-8 text-center">
-//         <AmpersandLogo />
-//         <div className="space-y-4">
-//           <h1 className="text-3xl font-bold text-foreground">Welcome to Ampersand</h1>
-//           <p className="text-muted-foreground">Connect with developers and build amazing projects together.</p>
-//         </div>
-//         <div className="space-y-3">
-//           <Button asChild className="w-full">
-//             <Link href="/signup">Get Started</Link>
-//           </Button>
-//           <Button variant="outline" asChild className="w-full bg-transparent">
-//             <Link href="/sign-in">Sign In</Link>
-//           </Button>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-
-'use client';
-
-import { useUser } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { Building2, Code2, ArrowRight, Users, Shield, Zap, Globe, Lock, TrendingUp, Database, ExternalLink, Copy, Check, Eye, Briefcase, Settings } from 'lucide-react';
-import LiveApiData from '../components/live-api-data';
+import { Loader2 } from "lucide-react";
+import { useAdminGate } from "@/hooks/useAdminGate";
 
 export default function HomePage() {
-  const { isLoaded, isSignedIn } = useUser();
-  const router = useRouter();
-  const [copiedEndpoint, setCopiedEndpoint] = useState<string | null>(null);
+  
+  const { checking, error } = useAdminGate();
 
-  useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      router.push('/dashboard');
-    }
-  }, [isLoaded, isSignedIn, router]);
-
-  const publicEndpoints = [
-    {
-      method: 'POST',
-      path: 'api/v1/auth/signup',
-      description: 'Create new user account with role selection',
-      public: true,
-      example: '{ "email": "dev@example.com", "password": "SecurePass123!", "user_type": "developer" }'
-    },
-    {
-      method: 'POST', 
-      path: 'api/v1/auth/signin',
-      description: 'Authenticate user and sync with backend',
-      public: true,
-      example: '{ "clerk_token": "your_clerk_session_token" }'
-    },
-    {
-      method: 'GET',
-      path: 'api/v1/reference/tech-stacks',
-      description: 'Get available technologies and frameworks',
-      public: false,
-      example: 'Returns: [{ "id": 1, "name": "React", "category": "Frontend" }]'
-    },
-    {
-      method: 'GET',
-      path: 'api/v1/reference/project-categories', 
-      description: 'Get project category options',
-      public: false,
-      example: 'Returns: [{ "id": 1, "name": "Web Development", "description": "..." }]'
-    },
-    {
-      method: 'GET',
-      path: 'api/v1/reference/experience-levels',
-      description: 'Get developer experience level options',
-      public: false, 
-      example: 'Returns: [{ "id": 1, "name": "Junior", "min_years": 0, "max_years": 2 }]'
-    },
-    {
-      method: 'GET',
-      path: 'api/v1/reference/project-scopes',
-      description: 'Get project scope and duration options', 
-      public: false,
-      example: 'Returns: [{ "id": 1, "name": "Small", "min_months": 1, "max_months": 3 }]'
-    }
-  ];
-
-  const liveApiEndpoints = [
-    {
-      path: 'api/v1/admin/reference/tech-stacks',
-      method: 'GET',
-      description: 'View all available technologies and frameworks',
-      title: 'Tech Stacks',
-      icon: <Code2 className="w-4 h-4" />
-    },
-    {
-      path: 'api/v1/admin/reference/project-categories',
-      method: 'GET', 
-      description: 'Browse project categories and types',
-      title: 'Project Categories',
-      icon: <Briefcase className="w-4 h-4" />
-    },
-    {
-      path: 'api/v1/admin/reference/experience-levels',
-      method: 'GET',
-      description: 'See developer experience level definitions',
-      title: 'Experience Levels',
-      icon: <TrendingUp className="w-4 h-4" />
-    },
-    {
-      path: 'api/v1/admin/reference/project-scopes',
-      method: 'GET',
-      description: 'View project scope and duration options',
-      title: 'Project Scopes', 
-      icon: <Settings className="w-4 h-4" />
-    },
-    {
-      path: 'api/v1/admin/reference/budget-types',
-      method: 'GET',
-      description: 'Browse budget type options',
-      title: 'Budget Types',
-      icon: <Database className="w-4 h-4" />
-    },
-    {
-      path: 'api/v1/admin/reference/project-types',
-      method: 'GET',
-      description: 'View available project types',
-      title: 'Project Types',
-      icon: <Globe className="w-4 h-4" />
-    }
-  ];
-
-  if (!isLoaded) {
+   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-violet-900 to-pink-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gray-500" />
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-violet-900 to-pink-900">
-      {/* Navigation */}
-      <nav className="bg-black/20 backdrop-blur-xl border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <Globe className="w-8 h-8 text-purple-400" />
-              <span className="text-xl font-bold text-white">Inception Platform</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <a
-                href="/sign-in"
-                className="px-4 py-2 text-white hover:text-purple-300 transition-colors"
-              >
-                Sign In
-              </a>
-              <a
-                href="/sign-up"
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Get Started
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-red-500">
+        {error}
+      </div>
+    );
+  }
 
-      {/* Hero Section */}
-   
+  // Nothing to render since redirection happens automatically
+  return null;
 
-      {/* Footer */}
-      <footer className="bg-black/30 border-t border-white/10 py-8 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-2 mb-4 md:mb-0">
-              <Globe className="w-6 h-6 text-purple-400" />
-              <span className="text-white font-medium">Inception Platform</span>
-            </div>
-            <p className="text-gray-400 text-sm">
-              © 2024 Inception Platform. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+  // return (
+  //   <div className="min-h-screen">
+  //     {/* Navigation */}
+  //     <nav className="bg-black/20 backdrop-blur-xl border-b border-white/10">
+  //       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  //         <div className="flex justify-between items-center h-16">
+  //           <div className="flex items-center gap-2">
+  //             <Globe className="w-8 h-8 text-purple-400" />
+  //             <span className="text-xl font-bold text-white">
+  //               Inception Platform
+  //             </span>
+  //           </div>
+  //           <div className="flex items-center gap-4">
+  //             <Link
+  //               href="/sign-in"
+  //               className="px-4 py-2 text-white hover:text-purple-300 transition-colors"
+  //             >
+  //               Sign In
+  //             </Link>
+
+  //             <Link
+  //               href="/sign-up"
+  //               className="px-4 py-2 text-white hover:text-purple-300 transition-colors"
+  //             >
+  //               Get Started
+  //             </Link>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </nav>
+
+  //     {/* Hero Section */}
+
+  //     {/* Footer */}
+  //     <footer className="bg-black/30 border-t border-white/10 py-8 mt-20">
+  //       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  //         <div className="flex flex-col md:flex-row justify-between items-center">
+  //           <div className="flex items-center gap-2 mb-4 md:mb-0">
+  //             <Globe className="w-6 h-6 text-purple-400" />
+  //             <span className="text-white font-medium">Inception Platform</span>
+  //           </div>
+  //           <p className="text-gray-400 text-sm">
+  //             © 2024 Inception Platform. All rights reserved.
+  //           </p>
+  //         </div>
+  //       </div>
+  //     </footer>
+  //   </div>
+  // );
 }

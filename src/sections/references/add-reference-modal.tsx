@@ -1,4 +1,4 @@
-import { Loader2, Save, Users } from "lucide-react";
+import { Loader2, Save } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import { Input } from "../../components/ui/input";
 import { createReference } from "@/services/referenceService";
 
 type AddReferenceModalProps = {
-  title: String;
+  title: string;
   open: boolean;
   setOpen: (v: boolean) => void;
   activeKey: string;

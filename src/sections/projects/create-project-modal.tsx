@@ -9,9 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Briefcase, Globe, Loader2, MapPin, Save, Users } from "lucide-react";
+import { Loader2, Save, Users } from "lucide-react";
 import { Project } from "@/types";
-import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,12 +25,12 @@ export function CreateProjectModal({
   setOpen: (v: boolean) => void;
 }) {
 
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [project, setProject] = useState<Project | null>(null);
-  const [categories, setcategories] = useState<any[]>([]);
-  const [businessTypes, setBusinessTypes] = useState<any[]>([]);
+  const [project] = useState<Project | null>(null);
+  const [categories] = useState<unknown[]>([]);
+  // const [businessTypes, setBusinessTypes] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -45,22 +44,6 @@ export function CreateProjectModal({
     tech_stack_ids: [],
     project_type_ids: []
   });
-
-  // const [uploadedLogo, setUploadedLogo] = useState<string[]>([]);
-
-  // const handleLogoUpload = async (files: File[]) => {
-  //   // In a real app, this would upload to a backend service
-  //   console.log("Uploading logo:", files);
-
-  //   // Simulate upload delay
-  //   await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  //   // Add file names to uploaded list (only one logo allowed)
-  //   const fileName = files[0]?.name;
-  //   if (fileName) {
-  //     setUploadedLogo([fileName]);
-  //   }
-  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

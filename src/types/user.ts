@@ -9,6 +9,8 @@ export interface User {
   username: string;
   created_at: string;
   updated_at: string;
+  public_metadata:{is_admin:boolean,user_type:string};
+  organization_id:string
 }
 
 export type UserType = 

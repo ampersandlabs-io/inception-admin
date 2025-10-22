@@ -4,16 +4,16 @@ export interface DashboardStats {
   total_companies: number;
   total_developers: number;
 
-  users_by_type: Record<string, any>[];
-  projects_by_status: Record<string, any>[];
-  projects_by_category: Record<string, any>[];
-  budget_distribution: Record<string, any>[];
-  popular_tech_stacks: Record<string, any>[];
-  new_users_timeline: Record<string, any>[];
-  new_projects_timeline: Record<string, any>[];
-  recent_activities: Record<string, any>[];
-  companies_by_size: Record<string, any>[];
-  companies_by_type: Record<string, any>[];
+  users_by_type: Record<string, string>[];
+  projects_by_status: Record<string, string>[];
+  projects_by_category: Record<string, string>[];
+  budget_distribution: Record<string, string>[];
+  popular_tech_stacks: Record<string, string>[];
+  new_users_timeline: Record<string, string>[];
+  new_projects_timeline: Record<string, string>[];
+  recent_activities: Record<string, string>[];
+  companies_by_size: Record<string, string>[];
+  companies_by_type: Record<string, string>[];
 
   total_project_value: number;
   average_project_value: number;

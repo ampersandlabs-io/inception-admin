@@ -1,5 +1,5 @@
+import { EmptyState } from "@/components/empty-state"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { EmptyState } from "./empty-state"
 import { Trophy } from "lucide-react"
 
 interface LeaderBoardProps {
@@ -28,7 +28,7 @@ export function LeaderBoard({ leaders }: LeaderBoardProps) {
               <span className="w-16 text-center">Rating</span>
             </div>
 
-            {leaders.map((leader, index) => (
+            {leaders.map((leader) => (
               <div key={leader.username} className="flex items-center gap-3">
                 <Avatar className="w-8 h-8">
                   <AvatarFallback className="bg-[#4318ff] text-white text-xs">{leader.name.charAt(0)}</AvatarFallback>

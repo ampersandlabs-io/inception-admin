@@ -1,23 +1,31 @@
+import { Company } from "./company";
+import { ReferenceData, Scope, TechStack } from "./reference";
+
+type ProjectStatus = "Draft" | "Submitted" | "In Bidding" | "Active" | "On Hold" | "Complete" | "Cancelled";
 export interface Project {
   id: string;
   title: string;
   code_name: string;
   description: string;
   status: string;
-  category?: any;
-  scope?: any;
-  experience_level?: any;
-  budget_type: any;
+  category?: ReferenceData;
+  scope?: Scope;
+  experience_level?: {
+    id: string,
+    name: string
+  };
+  budget_type: ReferenceData;
   budget_amount?: number;
   budget_currency?: string;
   hourly_rate_min?: number;
   hourly_rate_max?: number;
-  tech_stacks?: any[];
+  currency: string;
   tech_stack?: string[];
-  project_types?: any[];
+  project_types?: ReferenceData[];
   client_id: string;
   company_id?: number;
-  attachments?: any[];
+  company: Company
+  attachments?: string[];
   is_featured: boolean;
   is_urgent: boolean;
   visibility: string;
@@ -26,4 +34,5 @@ export interface Project {
   published_at?: string;
   deadline?: string;
   bid_count?: number;
+  tech_stacks: TechStack[];
 }

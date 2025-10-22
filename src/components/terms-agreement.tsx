@@ -21,8 +21,9 @@ export function TermsAgreement({ checked, onCheckedChange, id = "terms", classNa
         onCheckedChange={(checked) => onCheckedChange(checked as boolean)}
         className="mt-0.5 h-6 w-6 rounded-sm data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500 data-[state=checked]:text-white border-2 border-gray-300 flex-shrink-0"
       />
-      <Label htmlFor={id} className="text-base leading-6 text-slate-800 font-normal flex flex-wrap items-center gap-1">
-        <span>I agree to Ampersand's</span>
+      <Label htmlFor={id} className="text-base leading-6 text-slate-800 font-normal flex flex-wrap items-center gap-1">{/* eslint-disable-next-line react/no-unescaped-entities */}
+{/* eslint-disable-next-line react/no-unescaped-entities */}
+        <span>I agree to Ampersand&apos;s</span>      
         <Link href="/terms" className="hover:underline font-medium" style={{ color: theme.colors.primary.lightBlue }}>
           Terms of Service
         </Link>

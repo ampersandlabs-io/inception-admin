@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Home, FolderOpen, Table, CheckSquare, User, Settings, TrendingUp, Users, BriefcaseBusiness, BriefcaseBusinessIcon, UserCog, User2, UserPen, GroupIcon, ChevronDown, ChevronRight, BookAIcon, Book } from "lucide-react"
+import { Home, FolderOpen, Settings, BriefcaseBusinessIcon, UserCog, GroupIcon, ChevronDown, ChevronRight, Book } from "lucide-react"
 import { AmpersandLogo } from "@/components/ampersand-logo"
 import { useState } from "react"
 

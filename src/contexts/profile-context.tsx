@@ -17,7 +17,7 @@ interface ProfileData {
   workExperiences: WorkExperience[]
   yearsOfExperience: string
   techStack: string[]
-  educationBackground: any[]
+  educationBackground: string[]
 }
 
 interface ProfileContextType {

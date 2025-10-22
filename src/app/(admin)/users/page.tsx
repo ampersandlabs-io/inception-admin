@@ -10,16 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Progress } from "@/components/ui/progress";
 import { MoreHorizontal, ChevronDown, Loader2, User2 } from "lucide-react";
-import { PiDotsThree, PiDotsThreeBold } from "react-icons/pi";
 import { useEffect, useState } from "react";
 import { EmptyState } from "@/components/empty-state";
 import { getUsers } from "@/services/userService";
 import { User } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-// import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar"
 
 export default function UsersPage() {
 
@@ -88,7 +85,7 @@ export default function UsersPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map((user, index) => (
+                {users.map((user) => (
                   <TableRow key={user.id} className="border-[#e0e5f2]">
                     <TableCell className="text-[#2b3674] font-medium">
                       <div className="flex items-center gap-2">

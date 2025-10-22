@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AddReferenceModal } from "@/sections/references/add-reference-modal";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,9 +12,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import { Loader2, MoreHorizontal } from "lucide-react";
+import { Edit, Loader2, MoreHorizontal, Trash } from "lucide-react";
 import { fetchReference } from "@/services/referenceService";
-import { Dropdown } from "rizzui";
+import { Dropdown } from "@/components/ui/dropdown";
 
 const referenceColumns: Record<string, { label: string; key: string }[]> = {
   "tech-stacks": [
@@ -92,25 +92,45 @@ export default function ReferencesPage() {
   const [loading, setLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (dataMap[activeKey]) return;
-    fetchData();
-  }, [activeKey]);
+  // useEffect(() => {
+  //   if (dataMap[activeKey]) return;
+  //   fetchData();
+  // }, [activeKey, dataMap]);
 
-  const fetchData = async () => {
+  // const fetchData = async () => {
+  //   setLoading(true);
+  //   try {
+  //     // const ep = referenceData.find((e) => e.key === activeKey)!;
+  //     const json = await fetchReference(activeKey);
+  //     console.log(`${activeKey} References ==> ${JSON.stringify(json)}`);
+  //     setDataMap((prev) => ({ ...prev, [activeKey]: json }));
+  //   } catch (e) {
+  //     console.error(e);
+  //     setDataMap((prev) => ({ ...prev, [activeKey]: [] }));
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const fetchData = useCallback(async () => {
     setLoading(true);
-    try {
-      const ep = referenceData.find((e) => e.key === activeKey)!;
+    try { 
       const json = await fetchReference(activeKey);
+      const data = Array.isArray(json) ? json : json.items ?? [];
       console.log(`${activeKey} References ==> ${JSON.stringify(json)}`);
-      setDataMap((prev) => ({ ...prev, [activeKey]: json }));
+      setDataMap((prev) => ({ ...prev, [activeKey]: data }));
     } catch (e) {
       console.error(e);
       setDataMap((prev) => ({ ...prev, [activeKey]: [] }));
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeKey]);
+  
+  useEffect(() => {
+    if (dataMap[activeKey]) return;
+    fetchData();
+  }, [activeKey, dataMap, fetchData]);
 
   function onEdit(item: any) {
     console.log("Edit:", item);
@@ -180,8 +200,8 @@ export default function ReferencesPage() {
                   ))}
 
                   <TableCell>
-                    <Dropdown>
-                      <Dropdown.Trigger>
+                    <Dropdown
+                      trigger={
                         <Button
                           variant="ghost"
                           size="icon"
@@ -189,22 +209,21 @@ export default function ReferencesPage() {
                         >
                           <MoreHorizontal className="w-4 h-4" />
                         </Button>
-                      </Dropdown.Trigger>
-                      <Dropdown.Menu>
-                        <Dropdown.Item
-                          onClick={() => onEdit(dataMap[activeKey])}
-                          className="flex items-center gap-2"
-                        >
-                          Edit
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          onClick={() => onDelete(dataMap[activeKey])}
-                          className="flex items-center gap-2 text-red-500 focus:text-red-600"
-                        >
-                          Delete
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                      }
+                      items={[
+                        {
+                          label: "Edit",
+                          icon: <Edit className="w-4 h-4 text-gray-500" />,
+                          onClick: () => onEdit(dataMap[activeKey]),
+                        },
+                        {
+                          label: "Delete",
+                          icon: <Trash className="w-4 h-4 text-red-500" />,
+                          className: "text-red-600 hover:bg-red-50",
+                          onClick: () => onDelete(dataMap[activeKey]),
+                        },
+                      ]}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

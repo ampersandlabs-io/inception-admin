@@ -2,8 +2,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Eye, X, Loader2, AlertCircle, Database, Users, Briefcase, Code2, Settings, Building2 } from 'lucide-react';
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+import { Eye, X, Loader2, AlertCircle } from 'lucide-react';
+import Link from 'next/link';
+// const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 interface LiveApiDataProps {
   endpoint: {
     path: string;
@@ -138,11 +139,22 @@ export default function LiveApiData({ endpoint, children }: LiveApiDataProps) {
             <p className="text-red-400 text-sm">{error}</p>
             {error.includes('Authentication required') && (
               <p className="text-red-500 text-xs mt-1">
-                <a href="/sign-up" className="underline hover:no-underline">
+                <Link href="/sign-up" className="underline hover:no-underline">
+                Sign up
+                </Link>
+                {/* <a >
                   Sign up
-                </a> or <a href="/sign-in" className="underline hover:no-underline">
+                </a> */}
+                 or 
+
+                 <Link href="/sign-in" className="underline hover:no-underline">
+                Sign in
+                </Link>
+                 
+                 {/* <a href="/sign-in" className="underline hover:no-underline">
                   sign in
-                </a> to view this data
+                </a>  */}
+                to view this data
               </p>
             )}
           </div>

@@ -9,25 +9,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Briefcase, Globe, Loader2, MapPin, Save, Users } from "lucide-react";
-import { Company } from "@/types";
 import FileUpload from "@/components/file-upload";
-import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { createCompany, updateCompany } from "@/services/companyService"
 import { updateDeveloper } from "@/services/developerService";
+import { DeveloperProfile } from "@/types";
 
 export function CreateSquadModal({ open, setOpen }: { open: boolean; setOpen: (v: boolean) => void }) {
 
-  const router = useRouter();
-
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [squad, setSquad] = useState<{} | null>(null);
-  const [companySizes, setCompanySizes] = useState<any[]>([]);
-  const [businessTypes, setBusinessTypes] = useState<any[]>([]);
+  const [squad] = useState<DeveloperProfile | null>(null);
+  const [companySizes] = useState<unknown[]>([]);
+  const [businessTypes] = useState<unknown[]>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -41,6 +37,7 @@ export function CreateSquadModal({ open, setOpen }: { open: boolean; setOpen: (v
   });
 
   const [uploadedLogo, setUploadedLogo] = useState<string[]>([]);
+
   const [error, setError] = useState(null);
 
   const handleLogoUpload = async (files: File[]) => {
@@ -62,13 +59,16 @@ export function CreateSquadModal({ open, setOpen }: { open: boolean; setOpen: (v
     setSaving(true);
 
     try {
-      const data: any = {
+      const data = {
         name: formData.name,
         description: formData.description || "",
         website: formData.website || "",
         location_country: formData.location_country || "",
         state_region: formData.state_region || "",
         city: formData.city || "",
+        size_id: -1,
+        business_type_id: -1,
+        logo: ""
       };
 
       // Only add these fields if they have values
@@ -90,13 +90,13 @@ export function CreateSquadModal({ open, setOpen }: { open: boolean; setOpen: (v
       } else {
         // Create new squad
         // await api.companies.create(data);
-        createSquad(data)
+        // createSquad(data)
       }
 
       setOpen(false);
 
     } catch (error: any) {
-      setError(`Failed to save company: ${error.message}`);
+      setError(error);
     //   alert(error.message || "Failed to save company profile");
     } finally {
       setSaving(false);

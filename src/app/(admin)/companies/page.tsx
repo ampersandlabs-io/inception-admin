@@ -14,36 +14,20 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { CreateCompanyModal } from "@/sections/companies/create-company-modal";
-import { fetchCompanies } from "@/services/companyService";
 import { EmptyState } from "@/components/empty-state";
+import { useCompany } from "@/hooks/useCompany";
 
 export default function CompaniesPage() {
 
+  // const [loading, setLoading] = useState(true);
+  // const [companies, setCompanies] = useState<Company[] | null>(null);
+
+  const { companies, loading } = useCompany();
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [companies, setCompanies] = useState<Company[] | null>(null);
-
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      const companyData = await fetchCompanies();
-      setCompanies(companyData.companies);
-      console.log(`companies ==> ${JSON.stringify(companyData)}`);
-    } catch (error) {
-      setCompanies([]);
-      console.log("No existing company profile", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div role="status" className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-12 h-12 animate-spin" />
       </div>
     );
@@ -97,14 +81,13 @@ export default function CompaniesPage() {
 
                       <TableCell className="text-[#a3aed0]">
                         {" "}
-                        {company.business_type}
+                        {company.business_type.name}
                       </TableCell>
 
                       <TableCell className="text-[#a3aed0]">
                         {" "}
-                        {company.size}
+                        {company.size?.display_name}
                       </TableCell>
-
                       <TableCell>
                         <Button
                           variant="ghost"

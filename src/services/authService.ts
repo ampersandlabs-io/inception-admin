@@ -1,3 +1,4 @@
+import { User } from "@/types";
 import { apiClient } from "@lib/apiClient"
 
   export interface SignInResponse {
@@ -13,16 +14,23 @@ import { apiClient } from "@lib/apiClient"
   }
 
   export async function signOut() {
-    return apiClient<{}>("/auth/signout", {
+    return apiClient<unknown>("/auth/signout", {
       method: "POST",
       body: {},
     });
   }
 
   export async function signInWithClerk(token: string) {
-    return apiClient<{}>("/auth/signin", {
+    return apiClient<unknown>("/auth/signin", {
       method: "POST",
       body: { "clerk_token": token },
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  export async function getSignedInUser() {
+    return apiClient<User>("/auth/me", {
+      method: "GET"
     });
   }
 
