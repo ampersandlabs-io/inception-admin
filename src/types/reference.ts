@@ -21,3 +21,8 @@ export interface TechStack extends ReferenceData {
   category?: string;
   popularity_score?: number;
 }
+
+export interface Scope extends ReferenceData {
+  display_name: string;
+}
+

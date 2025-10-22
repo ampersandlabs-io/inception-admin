@@ -1,4 +1,5 @@
 
+import { getStoredToken } from "@/utils/token";
 import toast from "react-hot-toast";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
@@ -11,19 +12,20 @@ interface ApiOptions<TBody> {
   headers?: Record<string, string>;
 }
 
-let tokenProvider: (() => Promise<string | null>) | null = null;
+// let tokenProvider: (() => Promise<string | null>) | null = null;
 
-export function setTokenProvider(fn: () => Promise<string | null>) {
-  tokenProvider = fn;
-}
+// export function setTokenProvider(fn: () => Promise<string | null>) {
+//   tokenProvider = fn;
+// }
 
 export async function apiClient<TResponse, TBody = unknown>(
   endpoint: string,
   { method = "GET", body, headers = {} }: ApiOptions<TBody> = {}
 ): Promise<TResponse> {
 
-  const token = tokenProvider ? await tokenProvider() : null;
+  // const token = tokenProvider ? await tokenProvider() : null;
   // console.log(`Token ==> ${token}`)
+  const token = getStoredToken();
 
   const finalHeaders: Record<string, string> = {
     "Content-Type": "application/json",
@@ -36,11 +38,6 @@ export async function apiClient<TResponse, TBody = unknown>(
 
   const res = await fetch(`${API_BASE_URL}${endpoint}`, {
     method,
-    // headers: {
-    //   "Content-Type": "application/json",
-    //   'Authorization': `Bearer ${token}`,
-    //   ...headers,
-    // },
     headers: finalHeaders,
     body: body ? JSON.stringify(body) : undefined,
   });

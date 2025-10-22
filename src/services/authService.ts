@@ -27,7 +27,8 @@ import { apiClient } from "@lib/apiClient"
     });
   }
 
-  export async function getSignInUser(token: string) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  export async function getSignedInUser() {
     return apiClient<User>("/auth/me", {
       method: "GET"
     });
