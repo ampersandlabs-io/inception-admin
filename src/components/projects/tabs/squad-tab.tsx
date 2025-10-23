@@ -34,27 +34,27 @@ export function SquadTab({ project }: SquadTabProps) {
 
   useEffect(() => {
     fetchDevelopersAssignedToProject(project.id)
-  }, [])
+  }, [fetchDevelopersAssignedToProject, project.id])
 
   // Real active squad data from API
 
-  const handleAcceptBid = async (bidId: string) => {
-    try {
-      // await acceptBidMutation.mutateAsync({ projectId: project.id, bidId })
-      // showSuccess('Bid accepted!', 'The developer has been notified')
-    } catch (error) {
-      // showError('Failed to accept bid', 'Please try again later')
-    }
-  }
+  // const handleAcceptBid = async (bidId: string) => {
+  //   try {
+  //     // await acceptBidMutation.mutateAsync({ projectId: project.id, bidId })
+  //     // showSuccess('Bid accepted!', 'The developer has been notified')
+  //   } catch (error) {
+  //     // showError('Failed to accept bid', 'Please try again later')
+  //   }
+  // }
 
-  const handleRejectBid = async (bidId: string) => {
-    try {
-      // await rejectBidMutation.mutateAsync({ projectId: project.id, bidId })
-      // showSuccess('Bid rejected', 'The developer has been notified')
-    } catch (error) {
-      // showError('Failed to reject bid', 'Please try again later')
-    }
-  }
+  // const handleRejectBid = async (bidId: string) => {
+  //   try {
+  //     // await rejectBidMutation.mutateAsync({ projectId: project.id, bidId })
+  //     // showSuccess('Bid rejected', 'The developer has been notified')
+  //   } catch (error) {
+  //     // showError('Failed to reject bid', 'Please try again later')
+  //   }
+  // }
 
   return (
     <div className="flex gap-8">

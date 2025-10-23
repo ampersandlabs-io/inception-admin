@@ -1,7 +1,7 @@
 "use client"
 
 import { Project } from "@/types"
-import { formatBudget, formatDate } from "@/utils/util"
+import { formatDate } from "@/utils/util"
 
 interface OverviewTabProps {
   project: Project
@@ -23,7 +23,7 @@ export function OverviewTab({ project }: OverviewTabProps) {
 
         <div>
           <h3 className="text-[#2b3674] text-xl font-bold mb-4">Experience Level</h3>
-          <p className="text-[#8f9bba] leading-relaxed text-[15px]">{project.experience_level!!.name}</p>
+          <p className="text-[#8f9bba] leading-relaxed text-[15px]">{project.experience_level?.name}</p>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export function OverviewTab({ project }: OverviewTabProps) {
           <div className="mt-6">
             <h4 className="text-[#2b3674] text-xl font-bold mb-4">Project Types</h4>
             <div className="flex flex-wrap gap-2">
-              {project.project_types!!.map((type) => (
+              {project.project_types?.map((type) => (
                 <span
                   key={type.id}
                   className="px-3 py-1 bg-[#e9edf7] text-[#2b3674] rounded-full text-sm"
@@ -77,7 +77,7 @@ export function OverviewTab({ project }: OverviewTabProps) {
             </div>
             <div className="flex justify-between">
               <span className="text-[#8f9bba] text-sm">Scope:</span>
-              <span className="text-[#2b3674] font-medium text-sm">{project.scope!!.display_name}</span>
+              <span className="text-[#2b3674] font-medium text-sm">{project.scope?.display_name}</span>
             </div>
             {project.is_urgent && (
               <div className="flex justify-between">
@@ -92,9 +92,9 @@ export function OverviewTab({ project }: OverviewTabProps) {
           {/* Category Information */}
           <div className="mt-6">
             <h4 className="text-[#2b3674] text-xl font-bold mb-4">Category</h4>
-            <p className="text-[#8f9bba] text-sm">{project.category!!.name}</p>
-            {project.category!!.description && (
-              <p className="text-[#8f9bba] text-xs mt-1">{project.category!!.description}</p>
+            <p className="text-[#8f9bba] text-sm">{project.category?.name}</p>
+            {project.category?.description && (
+              <p className="text-[#8f9bba] text-xs mt-1">{project.category?.description}</p>
             )}
           </div>
 

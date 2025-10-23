@@ -2,8 +2,9 @@
 
 import { Project } from "@/types"
 import { MoreHorizontal } from "lucide-react"
+import { useState } from "react"
 
-const documents = [
+const documentsData = [
   {
     title: "High Fidelity Mockups",
     description: "Describes the features, user needs, and goals."
@@ -32,6 +33,11 @@ interface DocumentsTabProps {
 }
 
 export function DocumentsTab({ project }: DocumentsTabProps) {
+
+  const documents = useState(documentsData);
+  console.log(documents);
+  console.log(project.attachments);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
@@ -42,7 +48,7 @@ export function DocumentsTab({ project }: DocumentsTabProps) {
       </div>
 
       <div className="space-y-4">
-        {documents.map((doc, index) => (
+        {documentsData.map((doc, index) => (
           <div key={index} className="p-0">
             <div className="mb-4">
               <h4 className="font-medium text-[#2b3674] text-[15px] mb-1">{doc.title}</h4>

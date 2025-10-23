@@ -1,7 +1,6 @@
 import { siteConfig } from "@/config/site.config";
 import Image from "next/image";
 import Link from "next/link";
-import NotFoundImg from "@public/not-found.png";
 import { Button } from "@/components/ui/button";
 
 export default function Unauthorized() {

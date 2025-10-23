@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BriefcaseBusiness, Loader2 } from "lucide-react";
-import { Company } from "@/types";
 import { Card } from "@/components/ui/card";
 import {
   Table,
