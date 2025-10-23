@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 // import { useProjectCollaborators, useProjectInvitations, useInviteCollaborator, useCancelInvitation } from "@/lib/queries/collaborators"
 import { Project } from "@/types"
 import { Button } from "@/components/ui/button"
@@ -10,6 +9,8 @@ interface TeamTabProps {
 }
 
 export function TeamTab({ project }: TeamTabProps) {
+
+  console.log(project);
 
   // const [activeView, setActiveView] = useState<'members' | 'invitations'>('members')
 

@@ -1,5 +1,5 @@
 import { useProjects } from "@/hooks/useProjects";
-import { Calendar, Clock, Coins, Currency } from "lucide-react";
+import { Calendar, Clock, Coins } from "lucide-react";
 import { useEffect, useState } from "react";
 import { DocumentsTab } from "./tabs/documents-tab";
 import { TeamTab } from "./tabs/team-tab";
@@ -22,7 +22,7 @@ export function ProjectDetails({ projectId }: ProjectDetailsProps) {
 
   useEffect(() => {
     getProjectById(projectId);
-  }, [])
+  }, [projectId, getProjectById])
 
   if (loading) {
     return (

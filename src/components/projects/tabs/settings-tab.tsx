@@ -36,6 +36,9 @@ interface SettingsTabProps {
 }
 
 export function SettingsTab({ project }: SettingsTabProps) {
+
+  console.log(project);
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-8">

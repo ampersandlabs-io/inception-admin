@@ -60,6 +60,7 @@ export function useAdminGate({
         };
     
         verifyUser();
+          // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [isLoaded]); // ✅ only depends on isLoaded
 
     return { checking, error };

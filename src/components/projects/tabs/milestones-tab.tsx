@@ -56,6 +56,9 @@ interface MilestonesTabProps {
 }
 
 export function MilestonesTab({ project }: MilestonesTabProps) {
+
+  console.log(project);
+
   const [activeView, setActiveView] = useState<'milestones' | 'tasks'>('milestones')
 
   const getStatusIcon = (status: string) => {

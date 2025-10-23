@@ -61,7 +61,7 @@ export function useProjects() {
     } catch (error) {
       console.error("Failed to publish project:", error);
     }
-  }, [fetchProjects]);
+  }, []);
 
   const deleteProject = useCallback(async (projectId: string) => {
     try {
