@@ -2,6 +2,9 @@
   "name": "inception-admin",
   "version": "0.1.0",
   "private": true,
+  "lint-staged": {
+    "*.{ts,tsx,js}": "eslint --fix"
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev -p 3001",
