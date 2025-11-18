@@ -5,33 +5,18 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { AmpersandLogo } from "@/components/ampersand-logo";
-import { Eye, EyeOff } from "lucide-react";
 import { theme } from "@/lib/theme";
-import { useSignInHandler } from "@/hooks/useSignInHandler";
+import { useForgotPassword } from "@/hooks/useForgotPassword";
 
-export default function SignInPage() {
-
+export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState("");
-
-  const { handleSignIn, loading, error } = useSignInHandler();
-
-  // useEffect(() => {
-  //   if (isSignedIn) {
-  //     console.log("User already signed in, redirecting to dashboard");
-  //     router.push("dashboard");
-  //   }
-  // }, [isSignedIn, router]);
+  const { loading, handleForgotPassword, error } = useForgotPassword();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    handleSignIn(email, password);
+    handleForgotPassword(email);
   }
 
   return (
@@ -46,17 +31,16 @@ export default function SignInPage() {
           <div className="space-y-6">
             <div>
               <h2 className="text-3xl font-bold text-slate-800">
-                Welcome back!
+                Forgot Password?
               </h2>
               <p className="mt-2 text-sm text-gray-500">
-                Enter your email and password to sign in!
+                No worries we will send reset
               </p>
             </div>
 
             <form className="space-y-4" onSubmit={handleSubmit}>
               {/* Error */}
               {error && <p className="text-red-500 text-sm">{error}</p>}
-
               <div>
                 <Label
                   htmlFor="email"
@@ -74,7 +58,7 @@ export default function SignInPage() {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <Label
                   htmlFor="password"
                   className="text-sm font-medium text-slate-700"
@@ -102,10 +86,10 @@ export default function SignInPage() {
                     )}
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
+                {/* <div className="flex items-center space-x-2">
                   <Checkbox
                     id="remember"
                     checked={rememberMe}
@@ -117,50 +101,41 @@ export default function SignInPage() {
                   <Label htmlFor="remember" className="text-sm text-slate-700">
                     Remember me
                   </Label>
-                </div>
-                <Link
+                </div> */}
+                {/* <Link
                   href="/forgot-password"
                   className="text-sm hover:underline"
                   style={{ color: theme.colors.primary.lightBlue }}
                 >
                   Forgot password?
-                </Link>
+                </Link> */}
               </div>
 
               {/* Button */}
               <Button
                 type="submit"
+                disabled={!email}
                 className="w-full h-12 text-white font-medium rounded-sm hover:opacity-90"
                 style={{ backgroundColor: theme.colors.primary.blue }}
               >
-                {loading ? "Signing in..." : "Sign In"}
+                {loading ? "Resetting..." : "Reset password"}
               </Button>
             </form>
 
             <p className="text-left text-sm text-slate-600">
-              Not registered yet?{" "}
+              {/* Not registered yet?{" "} */}
+
               <Link
-                href="/"
+                href="/login"
                 style={{ color: theme.colors.primary.lightBlue }}
                 className="hover:underline"
               >
-                Contact Admin to get access
+                {/* <ArrowLeft />  */}
+                <span>Back to Login</span>
               </Link>
             </p>
           </div>
         </div>
-
-        {/* <div className="mt-8 text-center text-xs text-gray-500">
-          © 2025 All Rights Reserved
-          <div className="mt-2 space-x-4">
-            <Link href="/privacy" style={{ color: theme.colors.primary.lightBlue }} className="hover:underline">
-              Privacy Policy
-            </Link>
-            <Link href="/terms" style={{ color: theme.colors.primary.lightBlue }} className="hover:underline">
-              Terms of Use
-            </Link>
-          </div>
-        </div> */}
       </div>
     </div>
   );

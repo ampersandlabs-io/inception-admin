@@ -2,7 +2,7 @@ import { apiClient } from "@/lib/apiClient";
 import { DeveloperProfile, PagedResponse } from "@/types";
 
 export async function getDevelopers() {
-  return apiClient<PagedResponse<DeveloperProfile, "items">>(`/admin/developers/`, {
+  return apiClient<PagedResponse<DeveloperProfile, "items">>(`/admin/developers`, {
     method: "GET",
   });
 }

@@ -34,6 +34,13 @@ import { apiClient } from "@lib/apiClient"
     });
   }
 
+  export async function resetPassword(email: string) {
+    return apiClient<any>("/auth/password-reset", {
+      method: "POST",
+      body: { email: email }
+    });
+  }
+
   // export async function getProfile(token: string) {
   //   return apiClient<{ id: string; name: string; email: string }>("users/me", {
   //     method: "GET",
