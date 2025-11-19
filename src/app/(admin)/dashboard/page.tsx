@@ -130,8 +130,8 @@ export default function DashboardPage() {
               iconBg="bg-[#4318ff]"
             />
             <StatsCard
-              title="Total Projects"
-              value={dashboard?.total_companies ?? 0}
+              title="Total Users"
+              value={dashboard?.total_users ?? 0}
               icon={Folder}
               iconBg="bg-[#4318ff]"
             />

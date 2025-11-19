@@ -13,3 +13,9 @@ export async function createReference(key: string, referenceData: object) {
     body: referenceData,
   });
 }
+
+export async function deleteReference(key: string, referenceId: string) {
+  return apiClient<unknown>(`/admin/reference/${key}/${referenceId}`, {
+    method: "DELETE"
+  });
+}
