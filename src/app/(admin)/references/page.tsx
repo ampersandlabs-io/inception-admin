@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Edit, Loader2, MoreHorizontal, Trash } from "lucide-react";
-import { fetchReference } from "@/services/referenceService";
+import { deleteReference, fetchReference } from "@/services/referenceService";
 import { Dropdown } from "@/components/ui/dropdown";
 
 const referenceColumns: Record<string, { label: string; key: string }[]> = {
@@ -51,6 +51,11 @@ const referenceColumns: Record<string, { label: string; key: string }[]> = {
     { label: "Description", key: "description" },
     { label: "Is Active", key: "is_active" },
   ],
+  "company-sizes": [
+    { label: "Name", key: "display_name" },
+    { label: "Size Range", key: "size_range" },
+    { label: "Is Active", key: "is_active" },
+  ],
 };
 
 export default function ReferencesPage() {
@@ -85,32 +90,18 @@ export default function ReferencesPage() {
       key: "project-types",
       description: "View available project types",
     },
+    {
+      title: "Company Sizes",
+      key: "company-sizes",
+      description: "Size Range",
+    },
   ];
 
   const [activeKey, setActiveKey] = useState(referenceData[0].key);
   const [dataMap, setDataMap] = useState<Record<string, any[]>>({});
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-
-  // useEffect(() => {
-  //   if (dataMap[activeKey]) return;
-  //   fetchData();
-  // }, [activeKey, dataMap]);
-
-  // const fetchData = async () => {
-  //   setLoading(true);
-  //   try {
-  //     // const ep = referenceData.find((e) => e.key === activeKey)!;
-  //     const json = await fetchReference(activeKey);
-  //     console.log(`${activeKey} References ==> ${JSON.stringify(json)}`);
-  //     setDataMap((prev) => ({ ...prev, [activeKey]: json }));
-  //   } catch (e) {
-  //     console.error(e);
-  //     setDataMap((prev) => ({ ...prev, [activeKey]: [] }));
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -136,10 +127,34 @@ export default function ReferencesPage() {
     console.log("Edit:", item);
   }
 
-  function onDelete(item: any) {
-    if (confirm(`Are you sure you want to delete ${item.name}?`)) {
-      console.log("Deleting:", item);
+  async function onDelete(item: any) {
+    const displayName = getItemDisplayName(item);
+    if (!confirm(`Are you sure you want to delete ${displayName}?`)) return;
+
+    try {
+      setDeleteLoading(true);
+  
+      const res = await deleteReference(activeKey, item.id);
+      console.log( `response ==> ${JSON.stringify(res)}`);
+  
+      setDataMap(prev => ({
+        ...prev,
+        [activeKey]: prev[activeKey].filter((i) => i.id !== item.id)
+      }));
+    } catch (error) {
+      console.error("Delete error:", error);
+      // showError("Error", "Something went wrong while deleting.");
+    } finally {
+      setDeleteLoading(false);
     }
+  }
+
+  function getItemDisplayName(item: any) {
+    const columns = referenceColumns[activeKey]
+    if (!columns || columns.length === 0) return "item"
+  
+    const firstColKey = columns[0].key
+    return item[firstColKey] ?? "item"
   }
 
   // const activeEndpoint = referenceData.find((e) => e.key === activeKey);
@@ -195,7 +210,12 @@ export default function ReferencesPage() {
                 <TableRow key={item.id} className="border-[#e0e5f2]">
                   {(referenceColumns[activeKey] || []).map((col) => (
                     <TableCell key={col.key} className="text-[#2b3674]">
-                      {item[col.key] ?? "-"}
+                      {/* {item[col.key] ?? "-"} */}
+                      {col.key === "is_active"
+                        ? item[col.key]
+                          ? "Yes"
+                          : "No"
+                        : item[col.key] ?? "-"}
                     </TableCell>
                   ))}
 
@@ -214,13 +234,13 @@ export default function ReferencesPage() {
                         {
                           label: "Edit",
                           icon: <Edit className="w-4 h-4 text-gray-500" />,
-                          onClick: () => onEdit(dataMap[activeKey]),
+                          onClick: () => onEdit(item),
                         },
                         {
                           label: "Delete",
                           icon: <Trash className="w-4 h-4 text-red-500" />,
                           className: "text-red-600 hover:bg-red-50",
-                          onClick: () => onDelete(dataMap[activeKey]),
+                          onClick: () => onDelete(item),
                         },
                       ]}
                     />

@@ -1,8 +1,8 @@
-
 import { getStoredToken } from "@/utils/token";
 import toast from "react-hot-toast";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
@@ -22,7 +22,6 @@ export async function apiClient<TResponse, TBody = unknown>(
   endpoint: string,
   { method = "GET", body, headers = {} }: ApiOptions<TBody> = {}
 ): Promise<TResponse> {
-
   // const token = tokenProvider ? await tokenProvider() : null;
   // console.log(`Token ==> ${token}`)
   const token = getStoredToken();
@@ -59,5 +58,11 @@ export async function apiClient<TResponse, TBody = unknown>(
     throw new Error(errorMsg);
   }
 
-  return res.json() as Promise<TResponse>;
+  // return res.json() as Promise<TResponse>;
+  const text = await res.text();
+  try {
+    return text ? JSON.parse(text) : ({} as TResponse);
+  } catch {
+    return {} as TResponse;
+  }
 }
