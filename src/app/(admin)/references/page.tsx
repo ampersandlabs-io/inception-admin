@@ -100,7 +100,7 @@ export default function ReferencesPage() {
   const [activeKey, setActiveKey] = useState(referenceData[0].key);
   const [dataMap, setDataMap] = useState<Record<string, any[]>>({});
   const [loading, setLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [setDeleteLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const fetchData = useCallback(async () => {
