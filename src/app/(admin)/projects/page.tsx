@@ -3,15 +3,28 @@
 import { useState } from "react";
 import { ProjectCard } from "@/components/project-card";
 import { EmptyState } from "@/components/empty-state";
-import { Folder, Loader2 } from "lucide-react";
+import { Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CreateProjectModal } from "@/sections/projects/create-project-modal";
 import { useProjects } from "@/hooks/useProjects";
+import { PaginatedList } from "@/components/paginated-list";
+import { usePagination } from "@/hooks/usePagination";
 
 export default function ProjectPage() {
 
-  const { projects, loading, publishProject, deleteProject, editProject } = useProjects();
   const [open, setOpen] = useState(false);
+  const { page, pageSize, handlePageChange } = usePagination({
+    defaultPage: 1,
+    defaultPageSize: 9,
+  });
+  const {
+    projects,
+    loading,
+    totalItems,
+    publishProject,
+    deleteProject,
+    editProject,
+  } = useProjects(page, pageSize);
 
   return (
     <div className="min-h-screen">
@@ -22,34 +35,45 @@ export default function ProjectPage() {
             <Button onClick={() => setOpen(true)}>Create Project</Button>
           </div>
 
-          {loading ? (
-            <div
-              className="min-h-screen flex items-center justify-center"
-              role="status"
-            >
-              <Loader2 className="w-12 h-12 animate-spin" />
-            </div>
-          ) : projects.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => (
-                <ProjectCard 
-                key={project.id} 
+          <PaginatedList
+            items={projects}
+            loading={loading}
+            totalItems={totalItems}
+            page={page}
+            pageSize={pageSize}
+            setPage={handlePageChange}
+            onPageChange={handlePageChange}
+            renderItem={(project) => (
+              <ProjectCard
+                key={project.id}
                 project={project}
                 onPublish={publishProject}
                 onEdit={editProject}
                 onDelete={deleteProject}
+              />
+            )}
+            emptyState={
+              <div className="bg-white rounded-2xl border border-[#e0e5f2]">
+                <EmptyState
+                  icon={Folder}
+                  title="You have no projects"
+                  description="No projects have been created"
+                  actionText="Create Project"
+                  onAction={() => setOpen(true)}
                 />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              icon={Folder}
-              title="You have no projects"
-              description="No projects have been created"
-              actionText="Create Project"
-              onAction={() => setOpen(true)}
-            />
-          )}
+              </div>
+            }
+            renderLayout={(items, pagination) => (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {items}
+                </div>
+                <div className="mt-4 flex justify-center w-full">
+                  {pagination}
+                </div>
+              </>
+            )}
+          />
         </div>
       </div>
 

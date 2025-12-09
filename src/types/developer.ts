@@ -5,6 +5,7 @@ export interface DeveloperProfile {
     user_id: string;
     first_name?: string;
     role_name: string;
+    email?: string;
     last_name?: string;
     primary_role: string;
     years_experience: number;

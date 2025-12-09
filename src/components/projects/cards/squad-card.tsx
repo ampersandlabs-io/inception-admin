@@ -21,10 +21,15 @@ export function SquadCard({ developer }: SquadCardProps) {
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold">
-            {developer.first_name} {developer.last_name}
+            {developer.first_name || "Unknown"} {developer.last_name || "Unknown"}
           </h3>
+
           <p className="text-sm text-gray-400">
-            {developer.role_name || "Developer"}
+            {developer.role_name || "Unknown role"}
+          </p>
+
+          <p className="text-sm text-gray-400">
+            {developer.email || "Email not available"}
           </p>
         </div>
       </div>
@@ -39,7 +44,7 @@ export function SquadCard({ developer }: SquadCardProps) {
         <div>
           <p className="text-gray-500 text-xs mb-1">Experience</p>
           <span className="font-medium">
-            {developer.years_of_experience || 0} years
+            {developer.years_experience || 0} years
           </span>
         </div>
         <div>
@@ -56,7 +61,7 @@ export function SquadCard({ developer }: SquadCardProps) {
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-400 fill-current" />
             <span className="font-medium">
-              {developer.rating || "0"}
+              {developer.rating || "-"}
             </span>
           </div>
         </div>
@@ -98,9 +103,9 @@ export function SquadCard({ developer }: SquadCardProps) {
               href={`https://github.com/${developer.github_username}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 transition-colors"
             >
-              <Github className="w-4 h-4" />
+              <Github className="w-6 h-6" />
             </a>
           )}
           {developer.portfolio_url && (
@@ -108,7 +113,7 @@ export function SquadCard({ developer }: SquadCardProps) {
               href={developer.portfolio_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors"
+              className="text-gray-400 transition-colors"
             >
               <Globe className="w-4 h-4" />
             </a>

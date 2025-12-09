@@ -15,18 +15,21 @@ import { Button } from "@/components/ui/button";
 import { CreateCompanyModal } from "@/sections/companies/create-company-modal";
 import { EmptyState } from "@/components/empty-state";
 import { useCompany } from "@/hooks/useCompany";
+import { usePagination } from "@/hooks/usePagination";
+import { PaginatedList } from "@/components/paginated-list";
 
 export default function CompaniesPage() {
 
-  // const [loading, setLoading] = useState(true);
-  // const [companies, setCompanies] = useState<Company[] | null>(null);
-
-  const { companies, loading } = useCompany();
+  const { page, pageSize, handlePageChange } = usePagination({ defaultPage: 1, defaultPageSize: 10 });
+  const { companies, loading, totalItems } = useCompany(page, pageSize);
   const [open, setOpen] = useState(false);
 
- if (loading) {
+  if (loading) {
     return (
-      <div role="status" className="min-h-screen flex items-center justify-center">
+      <div
+        role="status"
+        className="min-h-screen flex items-center justify-center"
+      >
         <Loader2 className="w-12 h-12 animate-spin" />
       </div>
     );
@@ -45,70 +48,80 @@ export default function CompaniesPage() {
               <Button onClick={() => setOpen(true)}>Create Company</Button>
             </div>
 
-            {companies && companies.length > 0 ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-[#e0e5f2]">
-                      <TableHead className="text-[#a3aed0] font-medium">
-                        <div className="flex items-center gap-2">Company</div>
-                      </TableHead>
+            <Table>
+              <TableHeader>
+                <TableRow className="border-[#e0e5f2]">
+                  <TableHead className="text-[#a3aed0] font-medium">
+                    <div className="flex items-center gap-2">Company</div>
+                  </TableHead>
 
-                      <TableHead className="text-[#a3aed0] font-medium">
-                        <div className="flex items-center gap-2">
-                          Business Type
-                        </div>
-                      </TableHead>
+                  <TableHead className="text-[#a3aed0] font-medium">
+                    <div className="flex items-center gap-2">Business Type</div>
+                  </TableHead>
 
-                      <TableHead className="text-[#a3aed0] font-medium">
-                        <div className="flex items-center gap-2">
-                          Company Size
-                        </div>
-                      </TableHead>
+                  <TableHead className="text-[#a3aed0] font-medium">
+                    <div className="flex items-center gap-2">Company Size</div>
+                  </TableHead>
 
-                      <TableHead className="text-[#a3aed0] font-medium"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                  {companies.map((company) => (
-                    <TableRow key={company.id} className="border-[#e0e5f2]">
-                      <TableCell className="text-[#2b3674] font-medium">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-[#a3aed0] rounded-full"></div>
-                          {company.name}
-                        </div>
-                      </TableCell>
+                  <TableHead className="text-[#a3aed0] font-medium"></TableHead>
+                </TableRow>
+              </TableHeader>
 
-                      <TableCell className="text-[#a3aed0]">
-                        {" "}
-                        {company.business_type.name}
-                      </TableCell>
+              <PaginatedList
+                items={companies}
+                loading={loading}
+                totalItems={totalItems}
+                page={page}
+                pageSize={pageSize}
+                setPage={handlePageChange}
+                onPageChange={handlePageChange}
+                renderItem={(company) => (
+                  <TableRow key={company.id} className="border-[#e0e5f2]">
+                    <TableCell className="text-[#2b3674] font-medium">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 bg-[#a3aed0] rounded-full"></div>
+                        {company.name}
+                      </div>
+                    </TableCell>
 
-                      <TableCell className="text-[#a3aed0]">
-                        {" "}
-                        {company.size?.display_name}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-[#a3aed0]"
-                        ></Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  </TableBody>
-                </Table>
-            ) : (
-              <div className="bg-white rounded-2xl border border-[#e0e5f2]">
-                <EmptyState
-                  icon={BriefcaseBusiness}
-                  title="You have no companies"
-                  description="No companies have been created"
-                  actionText="Create Company"
-                  onAction={() => setOpen(true)}
-                />
-              </div>
-            )}
+                    <TableCell className="text-[#a3aed0]">
+                      {company.business_type.name}
+                    </TableCell>
+
+                    <TableCell className="text-[#a3aed0]">
+                      {company.size?.display_name}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-[#a3aed0]"
+                      ></Button>
+                    </TableCell>
+                  </TableRow>
+                )}
+                emptyState={
+                  <div className="bg-white rounded-2xl border border-[#e0e5f2]">
+                    <EmptyState
+                      icon={BriefcaseBusiness}
+                      title="You have no companies"
+                      description="No companies have been created"
+                      actionText="Create Company"
+                      onAction={() => setOpen(true)}
+                    />
+                  </div>
+                }
+                renderLayout={(items, pagination) => (
+                  <>
+                    <TableBody>{items}</TableBody>
+                    <div className="mt-4 flex justify-center w-full">
+                      {pagination}
+                    </div>
+                  </>
+                )}
+              />
+            </Table>
+
           </Card>
         </div>
       </div>

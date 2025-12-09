@@ -1,5 +1,5 @@
 import { resetPassword } from "@/services/authService";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 export function useForgotPassword() {
 

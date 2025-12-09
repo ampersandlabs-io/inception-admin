@@ -15,8 +15,8 @@ export async function updateCompany(companyId: string, company: Company) {
   });
 }
 
-export async function getCompanies() {
-  return apiClient<PagedResponse<Company, "companies">>(`/companies/companies`, {
+export async function getCompanies(page = 1, pageSize = 10) {
+  return apiClient<PagedResponse<Company, "companies">>(`/companies/companies?page=${page}&page_size=${pageSize}`, {
     method: "GET",
   });
 }
