@@ -10,8 +10,8 @@ import { theme } from "@/lib/theme";
 import { useForgotPassword } from "@/hooks/useForgotPassword";
 
 export default function ForgotPasswordPage() {
+  
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { loading, handleForgotPassword, error } = useForgotPassword();
 
   async function handleSubmit(e: React.FormEvent) {
