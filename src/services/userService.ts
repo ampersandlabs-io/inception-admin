@@ -15,8 +15,8 @@ export async function updateUser(userId: string, data: User) {
   });
 }
 
-export async function getUsers() {
-  return apiClient<PagedResponse<User>>(`/admin/users`, {
+export async function getUsers(page = 1, pageSize = 10) {
+  return apiClient<PagedResponse<User>>(`/admin/users?page=${page}&page_size=${pageSize}`, {
     method: "GET",
   });
 }

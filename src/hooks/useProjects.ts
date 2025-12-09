@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { deleteProjectRequest, getDevelopersAssignedToProject, getProjectById, getProjects, publishProjectRequest } from "@/services/projectService";
 import { DeveloperProfile, Project } from "@/types";
 
-export function useProjects() {
+export function useProjects(page: number, pageSize: number) {
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -10,19 +10,22 @@ export function useProjects() {
   
   const [projectSquads, setProjectSquads] = useState<DeveloperProfile[]>([]);
 
+  const [totalItems, setTotalItems] = useState(0);
+
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
-      const projectsData = await getProjects();
+      const projectsData = await getProjects(page, pageSize);
       console.log(`${JSON.stringify(projectsData)}`);
       setProjects(projectsData.projects);
+      setTotalItems(projectsData.total);
     } catch (error) {
       console.error("Failed to fetch projects:", error);
       setProjects([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, pageSize]);
 
   const fetchProjectById = useCallback(async (projectId: string) => {
     setLoading(true);
@@ -86,6 +89,7 @@ export function useProjects() {
   return {
     projects,
     loading,
+    totalItems,
     selectedProject,
     refreshProjects: fetchProjects,
     getProjectById: fetchProjectById,
