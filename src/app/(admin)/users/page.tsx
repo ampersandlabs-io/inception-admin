@@ -33,12 +33,15 @@ export default function UsersPage() {
   const [pageSize] = useState(10); // items per page
   const [totalItems, setTotalItems] = useState(0); // API returns this
 
-  // keep state in sync with url ?page=
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    // update URL without refreshing page
+    router.push(`${pathname}?page=${newPage}`);
+  };
+
   useEffect(() => {
-    const paramPage = Number(searchParams.get("page") || "1");
-    if (!Number.isNaN(paramPage) && paramPage > 0 && paramPage !== page) {
-      setPage(paramPage);
-    }
+    const fromUrl = Number(searchParams.get("page") || "1");
+    if (fromUrl !== page) setPage(fromUrl);
   }, [searchParams, page]);
 
   const loadUsers = useCallback(async () => {
@@ -65,14 +68,6 @@ export default function UsersPage() {
     const pages = Math.ceil(totalItems / pageSize);
     return pages > 0 ? pages : 1;
   }, [totalItems, pageSize]);
-
-  const handlePageChange = (newPage: number) => {
-    setPage(newPage);
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("page", String(newPage));
-    params.set("pageSize", String(pageSize));
-    router.replace(`${pathname}?${params.toString()}`);
-  };
 
   if (loading) {
     return (

@@ -2,25 +2,28 @@ import { useEffect, useState, useCallback } from "react";
 import { DeveloperProfile } from "@/types";
 import { getDeveloperById, getDevelopers } from "@/services/developerService";
 
-export function useSquad() {
+export function useSquad(page: number, pageSize: number) {
 
   const [squads, setSquads] = useState<DeveloperProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedSquad, setSelectedSquad] = useState<DeveloperProfile | null>(null);
 
+  const [totalItems, setTotalItems] = useState(0);
+
   const fetchSquads = useCallback(async () => {
     setLoading(true);
     try {
-      const squadsData = await getDevelopers();
+      const squadsData = await getDevelopers(page, pageSize);
       console.log(`squadsData ==> ${JSON.stringify(squadsData)}`);
       setSquads(squadsData.items);
+      setTotalItems(squadsData.total);
     } catch (error) {
       console.error("Failed to fetch projects:", error);
       setSquads([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, pageSize]);
 
   const fetchSquadById = useCallback(async (id: string) => {
     setLoading(true);
@@ -46,5 +49,7 @@ export function useSquad() {
     selectedSquad,
     refreshSquad: fetchSquads,
     getSquadById: fetchSquadById,
+
+    totalItems
   };
 }

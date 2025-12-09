@@ -1,8 +1,8 @@
 import { apiClient } from "@/lib/apiClient";
 import { DeveloperProfile, PagedResponse } from "@/types";
 
-export async function getDevelopers() {
-  return apiClient<PagedResponse<DeveloperProfile, "items">>(`/admin/developers`, {
+export async function getDevelopers(page = 1, pageSize = 10) {
+  return apiClient<PagedResponse<DeveloperProfile, "items">>(`/admin/developers?page=${page}&page_size=${pageSize}`, {
     method: "GET",
   });
 }

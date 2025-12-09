@@ -4,19 +4,19 @@ import { Button } from "@/components/ui/button";
 
 import { useState } from "react";
 
-import {
-  Loader2,
-  GroupIcon,
-} from "lucide-react";
+import { Loader2, GroupIcon } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { CreateSquadModal } from "@/sections/squad/create-company-modal";
 import { SquadCard } from "@/components/projects/cards/squad-card";
 import { useSquad } from "@/hooks/useSquad";
+import { PaginatedList } from "@/components/paginated-list";
+import { usePagination } from "@/hooks/usePagination";
 
 export default function SquadPage() {
-
+  
+  const { page, pageSize, handlePageChange } = usePagination({ defaultPage: 1, defaultPageSize: 9 });
   const [open, setOpen] = useState(false);
-  const { squads: developers, loading } = useSquad();
+  const { squads: developers, loading, totalItems } = useSquad(page, pageSize);
 
   if (loading) {
     return (
@@ -27,43 +27,73 @@ export default function SquadPage() {
   }
 
   return (
-
     <div className="min-h-screen">
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-[#2b3674]">Squad</h3>
-          <Button onClick={() => setOpen(true)}>Create Squad</Button>
-        </div>
-
-        {loading ? (
-          <div
-            role="status"
-            className="min-h-screen flex items-center justify-center"
-          >
-            <Loader2 className="w-12 h-12 animate-spin" />
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-[#2b3674]">Squad</h3>
+            <Button onClick={() => setOpen(true)}>Create Squad</Button>
           </div>
-        ) : developers.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {developers.map((developer) => (
+          <PaginatedList
+            items={developers}
+            loading={loading}
+            totalItems={totalItems}
+            page={page}
+            pageSize={pageSize}
+            setPage={handlePageChange}
+            onPageChange={handlePageChange}
+            renderItem={(developer) => (
               <SquadCard key={developer.id} developer={developer} />
-              // <ProjectCard key={project.id} project={project} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            icon={GroupIcon}
-            title="You have no squads"
-            description=""
-            actionText="Create Squad"
-            onAction={() => setOpen(true)}
+            )}
+            emptyState={
+              <EmptyState
+                icon={GroupIcon}
+                title="You have no squads"
+                description=""
+                actionText="Create Squad"
+                onAction={() => setOpen(true)}
+              />
+            }
+            renderLayout={(items, pagination) => (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {items}
+                </div>
+                <div className="mt-4 flex justify-center w-full">
+                  {pagination}
+                </div>
+              </>
+            )}
           />
-        )}
-      </div>
-    </div>
 
-    {/* Create Content Content */}
-    <CreateSquadModal open={open} setOpen={setOpen} />
-  </div>
+          {/* {loading ? (
+            <div
+              role="status"
+              className="min-h-screen flex items-center justify-center"
+            >
+              <Loader2 className="w-12 h-12 animate-spin" />
+            </div>
+          ) : developers.length > 0 ? (
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {developers.map((developer) => (
+                <SquadCard key={developer.id} developer={developer} />
+                // <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState
+              icon={GroupIcon}
+              title="You have no squads"
+              description=""
+              actionText="Create Squad"
+              onAction={() => setOpen(true)}
+            />
+          )} */}
+        </div>
+      </div>
+
+      {/* Create Content Content */}
+      <CreateSquadModal open={open} setOpen={setOpen} />
+    </div>
   );
 }
