@@ -1,7 +1,4 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-
 import { useState } from "react";
 
 import { Loader2, GroupIcon } from "lucide-react";
@@ -12,6 +9,7 @@ import { useSquad } from "@/hooks/useSquad";
 import { PaginatedList } from "@/components/paginated-list";
 import { usePagination } from "@/hooks/usePagination";
 import { useSnackbar } from "@/contexts/snackbar-context"
+import { Button } from "@/components/ui/button";
 
 export default function SquadPage() {
   
@@ -92,30 +90,6 @@ export default function SquadPage() {
               </>
             )}
           />
-
-          {/* {loading ? (
-            <div
-              role="status"
-              className="min-h-screen flex items-center justify-center"
-            >
-              <Loader2 className="w-12 h-12 animate-spin" />
-            </div>
-          ) : developers.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {developers.map((developer) => (
-                <SquadCard key={developer.id} developer={developer} />
-                // <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              icon={GroupIcon}
-              title="You have no squads"
-              description=""
-              actionText="Create Squad"
-              onAction={() => setOpen(true)}
-            />
-          )} */}
         </div>
       </div>
 
