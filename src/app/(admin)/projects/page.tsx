@@ -11,20 +11,25 @@ import { PaginatedList } from "@/components/paginated-list";
 import { usePagination } from "@/hooks/usePagination";
 
 export default function ProjectPage() {
-
+  
   const [open, setOpen] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<
+    "All" | "Pending" | "Active"
+  >("All");
   const { page, pageSize, handlePageChange } = usePagination({
     defaultPage: 1,
     defaultPageSize: 9,
   });
-  const {
-    projects,
-    loading,
-    totalItems,
-    publishProject,
-    deleteProject,
-    editProject,
-  } = useProjects(page, pageSize);
+  const statusParam =
+    statusFilter === "All" ? undefined : statusFilter.toUpperCase();
+
+  const { projects, loading, totalItems, publishProject, deleteProject, editProject } =
+    useProjects(page, pageSize, statusParam);
+
+  const onFilterChange = (value: "All" | "Pending" | "Active") => {
+    setStatusFilter(value);
+    handlePageChange(1);
+  };
 
   return (
     <div className="min-h-screen">
@@ -32,6 +37,21 @@ export default function ProjectPage() {
         <div className="grid grid-cols-1 gap-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#2b3674]">Projects</h3>
+            <div className="flex items-center gap-2">
+              {(["All", "Pending", "Active"] as const).map((value) => {
+                const isActive = statusFilter === value;
+                return (
+                  <Button
+                    key={value}
+                    variant={isActive ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => onFilterChange(value)}
+                  >
+                    {value}
+                  </Button>
+                );
+              })}
+            </div>
             <Button onClick={() => setOpen(true)}>Create Project</Button>
           </div>
 

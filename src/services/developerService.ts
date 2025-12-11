@@ -18,7 +18,7 @@ export async function approveDeveloper(
   reason: string,
   notes: string
 ) {
-  return apiClient<unknown>(`/admin/developers/${developerId}/approve/`, {
+  return apiClient<unknown>(`/admin/developers/${developerId}/approve`, {
     method: "POST",
     body: { reason: reason, notes: notes },
   });
@@ -29,7 +29,7 @@ export async function rejectDeveloper(
   reason: string,
   notes: string
 ) {
-  return apiClient<unknown>(`/admin/developers/${developerId}/approve/`, {
+  return apiClient<unknown>(`/admin/developers/${developerId}/reject`, {
     method: "POST",
     body: { reason: reason, notes: notes },
   });

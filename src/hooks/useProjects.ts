@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { deleteProjectRequest, getDevelopersAssignedToProject, getProjectById, getProjects, publishProjectRequest } from "@/services/projectService";
 import { DeveloperProfile, Project } from "@/types";
 
-export function useProjects(page: number, pageSize: number) {
+export function useProjects(page: number, pageSize: number, status?: string) {
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export function useProjects(page: number, pageSize: number) {
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
-      const projectsData = await getProjects(page, pageSize);
+      const projectsData = await getProjects(page, pageSize, status);
       console.log(`${JSON.stringify(projectsData)}`);
       setProjects(projectsData.projects);
       setTotalItems(projectsData.total);
@@ -25,7 +25,7 @@ export function useProjects(page: number, pageSize: number) {
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize]);
+  }, [page, pageSize, status]);
 
   const fetchProjectById = useCallback(async (projectId: string) => {
     setLoading(true);

@@ -11,12 +11,34 @@ import { SquadCard } from "@/components/projects/cards/squad-card";
 import { useSquad } from "@/hooks/useSquad";
 import { PaginatedList } from "@/components/paginated-list";
 import { usePagination } from "@/hooks/usePagination";
+import { useSnackbar } from "@/contexts/snackbar-context"
 
 export default function SquadPage() {
   
   const { page, pageSize, handlePageChange } = usePagination({ defaultPage: 1, defaultPageSize: 9 });
   const [open, setOpen] = useState(false);
-  const { squads: developers, loading, totalItems } = useSquad(page, pageSize);
+  const { squads: developers, loading, totalItems, approveSquad, rejectSquad } = useSquad(page, pageSize);
+  const { showSuccess, showError } = useSnackbar()
+
+  const handleApprove = async (developerId: string) => {
+    try {
+      await approveSquad(developerId);
+      // optional toast here, if you use a snackbar
+      showSuccess("Approved", "Developer successfully approved");
+      
+    } catch (error: any) {
+      showError("Approval failed", error.message || "Failed to approve");
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    try {
+      await rejectSquad(id);
+      showSuccess("Rejected", "Developer was rejected");
+    } catch (error: any) {
+      showError("Reject failed", error.message || "Unable to reject developer");
+    }
+  };
 
   if (loading) {
     return (
@@ -43,7 +65,12 @@ export default function SquadPage() {
             setPage={handlePageChange}
             onPageChange={handlePageChange}
             renderItem={(developer) => (
-              <SquadCard key={developer.id} developer={developer} />
+              <SquadCard 
+                key={developer.id} 
+                developer={developer}
+                onApprove={() => handleApprove(developer.id)}
+                onReject={() => handleReject(developer.id)}
+              />
             )}
             emptyState={
               <EmptyState
