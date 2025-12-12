@@ -13,6 +13,7 @@ interface PaginatedListProps<T> {
   pageSize: number;
   renderItem: (item: T) => React.ReactNode;
   emptyState?: React.ReactNode;
+  listType?: "table" | "grid" | "stack";
   childrenBeforeItems?: React.ReactNode;
   renderLayout?: (
     items: React.ReactNode,
@@ -32,6 +33,7 @@ export function PaginatedList<T>(props: PaginatedListProps<T>) {
     pageSize,
     renderItem,
     emptyState,
+    listType,
     childrenBeforeItems,
     renderLayout,
     paginationClassName,
@@ -70,6 +72,18 @@ export function PaginatedList<T>(props: PaginatedListProps<T>) {
       <>
         {childrenBeforeItems}
         {renderLayout(itemsNode, paginationNode)}
+      </>
+    );
+  }
+
+  // 🟡 Otherwise auto-generate based on listType
+  if (listType === "table") {
+    return (
+      <>
+        {/* only rows in body */}
+        <tbody>{itemsNode}</tbody>
+        {/* pagination MUST be outside table by consumer */}
+        {paginationNode}
       </>
     );
   }

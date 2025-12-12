@@ -1,15 +1,27 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Dropdown } from "@/components/ui/dropdown";
 import { DeveloperProfile } from "@/types";
-import { Briefcase, DollarSign, Github, Globe, Star } from "lucide-react";
+import {
+  Briefcase,
+  CheckCircle,
+  DollarSign,
+  Github,
+  Globe,
+  MoreVertical,
+  Star,
+  XCircle,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface SquadCardProps {
   developer: DeveloperProfile;
+  onApprove: () => void;
+  onReject: () => void;
 }
 
-export function SquadCard({ developer }: SquadCardProps) {
-  
+export function SquadCard({ developer, onApprove, onReject }: SquadCardProps) {
   const router = useRouter();
 
   return (
@@ -18,21 +30,59 @@ export function SquadCard({ developer }: SquadCardProps) {
       className="bg-white backdrop-blur-xl border border-white/10 rounded-xl p-6 hover:bg-white transition-all"
     >
       {/* Header */}
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h3 className="text-lg font-semibold">
-            {developer.first_name || "Unknown"} {developer.last_name || "Unknown"}
+      <div className="flex justify-between items-center mb-2">
+        <div className="flex items-center gap-2">
+          {/* Name + check icon */}
+          {/* First Name Last Name */}
+          <h3 className="text-lg font-semibold text-[#2b3674]">
+            {developer.first_name || "Unknown"}{" "}
+            {developer.last_name || "Unknown"}
           </h3>
-
-          <p className="text-sm text-gray-400">
-            {developer.role_name || "Unknown role"}
-          </p>
-
-          <p className="text-sm text-gray-400">
-            {developer.email || "Email not available"}
-          </p>
+          {/* Vetting status */}
+          {developer.vetting_status == "approved" && (
+            <CheckCircle className="h-5 w-5 text-green-500" />
+          )}
+          {developer.vetting_status == "rejected" && (
+            // You will need to import XCircle (or similar) from your icon library
+            <XCircle className="h-5 w-5 text-red-500" />
+          )}
         </div>
+
+        {/* More actions dropdown */}
+        <span className="">
+          <Dropdown
+            trigger={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-[#a3aed0] cursor-pointer"
+              >
+                <MoreVertical className="w-4 h-4" />
+              </Button>
+            }
+            items={[
+              {
+                label: "Approve",
+                onClick: onApprove,
+              },
+              {
+                label: "Reject",
+                onClick: onReject,
+              },
+            ]}
+          />
+        </span>
       </div>
+
+      {/* Role */}
+      <p className="text-sm text-gray-400">
+        {developer.role_name || "Unknown role"}
+      </p>
+
+      {/* Email */}
+      <p className="text-sm text-gray-400">
+        {developer.email || "Email not available"}
+      </p>
 
       {/* Bio */}
       <p className="text-gray-300 text-sm mb-4 line-clamp-2">
@@ -60,9 +110,7 @@ export function SquadCard({ developer }: SquadCardProps) {
           <p className="text-gray-500 text-xs mb-1">Rating</p>
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="font-medium">
-              {developer.rating || "-"}
-            </span>
+            <span className="font-medium">{developer.rating || "-"}</span>
           </div>
         </div>
         <div>
@@ -121,7 +169,7 @@ export function SquadCard({ developer }: SquadCardProps) {
         </div>
         <button
           onClick={() => router.push(`squad/${developer.id}`)}
-          className="inline-flex items-center gap-2 px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 cursor-pointer px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-lg transition-colors"
         >
           View Profile
         </button>

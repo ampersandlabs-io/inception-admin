@@ -1,22 +1,42 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-
 import { useState } from "react";
 
 import { Loader2, GroupIcon } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { CreateSquadModal } from "@/sections/squad/create-company-modal";
-import { SquadCard } from "@/components/projects/cards/squad-card";
+import { SquadCard } from "@/components/squad/squad-card";
 import { useSquad } from "@/hooks/useSquad";
 import { PaginatedList } from "@/components/paginated-list";
 import { usePagination } from "@/hooks/usePagination";
+import { useSnackbar } from "@/contexts/snackbar-context"
+import { Button } from "@/components/ui/button";
 
 export default function SquadPage() {
   
   const { page, pageSize, handlePageChange } = usePagination({ defaultPage: 1, defaultPageSize: 9 });
   const [open, setOpen] = useState(false);
-  const { squads: developers, loading, totalItems } = useSquad(page, pageSize);
+  const { squads: developers, loading, totalItems, approveSquad, rejectSquad } = useSquad(page, pageSize);
+  const { showSuccess, showError } = useSnackbar()
+
+  const handleApprove = async (developerId: string) => {
+    try {
+      await approveSquad(developerId);
+      // optional toast here, if you use a snackbar
+      showSuccess("Approved", "Developer successfully approved");
+      
+    } catch (error: any) {
+      showError("Approval failed", error.message || "Failed to approve");
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    try {
+      await rejectSquad(id);
+      showSuccess("Rejected", "Developer was rejected");
+    } catch (error: any) {
+      showError("Reject failed", error.message || "Unable to reject developer");
+    }
+  };
 
   if (loading) {
     return (
@@ -43,7 +63,12 @@ export default function SquadPage() {
             setPage={handlePageChange}
             onPageChange={handlePageChange}
             renderItem={(developer) => (
-              <SquadCard key={developer.id} developer={developer} />
+              <SquadCard 
+                key={developer.id} 
+                developer={developer}
+                onApprove={() => handleApprove(developer.id)}
+                onReject={() => handleReject(developer.id)}
+              />
             )}
             emptyState={
               <EmptyState
@@ -65,30 +90,6 @@ export default function SquadPage() {
               </>
             )}
           />
-
-          {/* {loading ? (
-            <div
-              role="status"
-              className="min-h-screen flex items-center justify-center"
-            >
-              <Loader2 className="w-12 h-12 animate-spin" />
-            </div>
-          ) : developers.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {developers.map((developer) => (
-                <SquadCard key={developer.id} developer={developer} />
-                // <ProjectCard key={project.id} project={project} />
-              ))}
-            </div>
-          ) : (
-            <EmptyState
-              icon={GroupIcon}
-              title="You have no squads"
-              description=""
-              actionText="Create Squad"
-              onAction={() => setOpen(true)}
-            />
-          )} */}
         </div>
       </div>
 

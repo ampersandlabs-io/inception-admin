@@ -1,28 +1,29 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { DM_Sans } from "next/font/google"
-import { GeistMono } from "geist/font/mono"
-import { ProfileProvider } from "@/contexts/profile-context"
-import "../../styles/globals.css"
-import { ClerkProvider } from "@clerk/nextjs"
+import type React from "react";
+import type { Metadata } from "next";
+import { DM_Sans } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
+import { ProfileProvider } from "@/contexts/profile-context";
+import "../../styles/globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
+import { SnackbarProvider } from "@/contexts/snackbar-context";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-sans",
-})
+});
 
 export const metadata: Metadata = {
   title: "Ampersand Admin",
   description: "Admin to manage the Ampersand platform",
   generator: "Inception",
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -36,11 +37,13 @@ html {
         `}</style>
       </head>
       <ClerkProvider>
-      <body className={`${dmSans.variable} ${GeistMono.variable}`}>
-        <ProfileProvider>{children}</ProfileProvider>
-        <Toaster position="top-right" />
-      </body>
+        <SnackbarProvider>
+          <body className={`${dmSans.variable} ${GeistMono.variable}`}>
+            <ProfileProvider>{children}</ProfileProvider>
+            <Toaster position="top-right" />
+          </body>
+        </SnackbarProvider>
       </ClerkProvider>
     </html>
-  )
+  );
 }

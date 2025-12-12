@@ -72,6 +72,7 @@ export default function CompaniesPage() {
                 loading={loading}
                 totalItems={totalItems}
                 page={page}
+                listType={"table"}
                 pageSize={pageSize}
                 setPage={handlePageChange}
                 onPageChange={handlePageChange}
@@ -85,7 +86,7 @@ export default function CompaniesPage() {
                     </TableCell>
 
                     <TableCell className="text-[#a3aed0]">
-                      {company.business_type.name}
+                      {company.business_type?.name}
                     </TableCell>
 
                     <TableCell className="text-[#a3aed0]">
@@ -115,13 +116,13 @@ export default function CompaniesPage() {
                   <>
                     <TableBody>{items}</TableBody>
                     <div className="mt-4 flex justify-center w-full">
-                      {pagination}
-                    </div>
+                  {pagination}
+                </div>
                   </>
+                  
                 )}
               />
             </Table>
-
           </Card>
         </div>
       </div>
