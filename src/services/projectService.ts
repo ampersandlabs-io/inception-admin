@@ -56,14 +56,31 @@ export async function publishProjectRequest(projectId: string) {
 }
 
 export async function deleteProjectRequest(projectId: string) {
-  return apiClient<Project>(`/projects/${projectId}/`, {
+  return apiClient<Project>(`/projects/${projectId}`, {
     method: "DELETE",
   });
 }
 
-export async function updateProjectStatus(projectId: string, status: string) {
-  return apiClient<Project>(`/projects/${projectId}/`, {
+export async function approveProjectRequest(projectId: string, reason: string = "") {
+  return apiClient<Project>(`/admin/projects/${projectId}/approve`, {
+    method: "POST",
+    body: {
+        "approved": true,
+        "rejection_reason": reason
+    }
+  })
+}
+
+export async function updateProjectStatusRequest(projectId: string, status: string) {
+  return apiClient<Project>(`/projects/${projectId}`, {
     method: "PUT",
     body: { status: status },
+  });
+}
+
+export async function updateProjectVisibilityRequest(projectId: string, visibility: string) {
+  return apiClient<Project>(`/projects/${projectId}/visibility`, { 
+    method: "PATCH",
+    body: { visibility: visibility },
   });
 }

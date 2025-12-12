@@ -13,9 +13,7 @@ import { usePagination } from "@/hooks/usePagination";
 export default function ProjectPage() {
   
   const [open, setOpen] = useState(false);
-  const [statusFilter, setStatusFilter] = useState<
-    "All" | "Pending" | "Active"
-  >("All");
+  const [statusFilter, setStatusFilter] = useState<"All" | "Draft" | "Pending" | "Active" | "Completed">("All");
   const { page, pageSize, handlePageChange } = usePagination({
     defaultPage: 1,
     defaultPageSize: 9,
@@ -23,10 +21,10 @@ export default function ProjectPage() {
   const statusParam =
     statusFilter === "All" ? undefined : statusFilter.toUpperCase();
 
-  const { projects, loading, totalItems, publishProject, deleteProject, editProject } =
+  const { projects, loading, totalItems, publishProject, deleteProject, editProject, approveProject } =
     useProjects(page, pageSize, statusParam);
 
-  const onFilterChange = (value: "All" | "Pending" | "Active") => {
+  const onFilterChange = (value: "All" | "Draft" | "Pending" | "Active" | "Completed") => {
     setStatusFilter(value);
     handlePageChange(1);
   };
@@ -38,7 +36,7 @@ export default function ProjectPage() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#2b3674]">Projects</h3>
             <div className="flex items-center gap-2">
-              {(["All", "Pending", "Active"] as const).map((value) => {
+              {(["All", "Draft", "Pending", "Active", "Completed"] as const).map((value) => {
                 const isActive = statusFilter === value;
                 return (
                   <Button
@@ -68,6 +66,7 @@ export default function ProjectPage() {
                 key={project.id}
                 project={project}
                 onPublish={publishProject}
+                onApprove={approveProject}
                 onEdit={editProject}
                 onDelete={deleteProject}
               />

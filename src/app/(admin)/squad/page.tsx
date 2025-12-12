@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Loader2, GroupIcon } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { CreateSquadModal } from "@/sections/squad/create-company-modal";
-import { SquadCard } from "@/components/projects/cards/squad-card";
+import { SquadCard } from "@/components/squad/squad-card";
 import { useSquad } from "@/hooks/useSquad";
 import { PaginatedList } from "@/components/paginated-list";
 import { usePagination } from "@/hooks/usePagination";

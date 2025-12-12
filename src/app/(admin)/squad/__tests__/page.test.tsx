@@ -24,7 +24,7 @@ jest.mock("@/components/empty-state", () => ({
   EmptyState: ({ title }: { title: string }) => <div>{title}</div>,
 }));
 
-jest.mock("@/components/projects/cards/squad-card", () => ({
+jest.mock("@/components/squad/squad-card", () => ({
   SquadCard: ({ developer }: { developer: any }) => (
     <div data-testid="squad-card">{developer.name}</div>
   ),

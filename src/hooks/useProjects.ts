@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { deleteProjectRequest, getDevelopersAssignedToProject, getProjectById, getProjects, publishProjectRequest } from "@/services/projectService";
+import { deleteProjectRequest, getDevelopersAssignedToProject, getProjectById, getProjects, publishProjectRequest, approveProjectRequest, updateProjectStatusRequest } from "@/services/projectService";
 import { DeveloperProfile, Project } from "@/types";
 
 export function useProjects(page: number, pageSize: number, status?: string) {
@@ -66,6 +66,20 @@ export function useProjects(page: number, pageSize: number, status?: string) {
     }
   }, []);
 
+  const approveProject = useCallback(async (projectId: string) => {
+    try {
+      // await approveProjectRequest(projectId);
+      await updateProjectStatusRequest(projectId, "PENDING")
+      setProjects(prev =>
+        prev.map(p =>
+          p.id === projectId ? { ...p, status: "PENDING" } : p
+        )
+      );
+    } catch (error) {
+      console.error("Failed to publish project:", error);
+    }
+  }, [])
+
   const deleteProject = useCallback(async (projectId: string) => {
     try {
       await deleteProjectRequest(projectId); // ✅ create this API fn in services
@@ -98,6 +112,7 @@ export function useProjects(page: number, pageSize: number, status?: string) {
     fetchDevelopersAssignedToProject,
 
     publishProject,
+    approveProject,
     deleteProject,
     editProject,
   };

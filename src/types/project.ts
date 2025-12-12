@@ -29,6 +29,7 @@ export interface Project {
   is_featured: boolean;
   is_urgent: boolean;
   visibility: string;
+  invite_only: boolean;
   created_at: string;
   updated_at: string;
   published_at?: string;
