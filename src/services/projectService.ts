@@ -1,5 +1,5 @@
 import { apiClient } from "@/lib/apiClient";
-import { DeveloperProfile, PagedResponse, Project } from "@/types";
+import { ActiveSquadResponse, Milestone, PagedResponse, Project } from "@/types";
 import { ProjectBid } from "@/types/projectBid";
 
 export async function createProject(project: Project) {
@@ -38,7 +38,7 @@ export async function getProjectById(projectId: string) {
 }
 
 export async function getDevelopersAssignedToProject(projectId: string) {
-  return apiClient<DeveloperProfile[]>(`/projects/${projectId}/developers`, {
+  return apiClient<PagedResponse<ActiveSquadResponse, "developers">>(`/projects/${projectId}/developers`, {
     method: "GET",
   });
 }
@@ -82,5 +82,31 @@ export async function updateProjectVisibilityRequest(projectId: string, visibili
   return apiClient<Project>(`/projects/${projectId}/visibility`, { 
     method: "PATCH",
     body: { visibility: visibility },
+  });
+}
+
+export async function createMilestoneRequest(
+  projectId: string,
+  milestone: Milestone
+) {
+  return apiClient<Project>(`/projects/${projectId}/milestones`, {
+    method: "POST",
+    body: {
+      title: milestone.title,
+      description: milestone.description,
+      due_date: milestone.due_date,
+      budget_allocation: milestone.budget_allocation,
+      currency: milestone.currency,
+      order_index: milestone.order_index,
+    },
+  });
+}
+
+export async function getAlProjectMilestonesRequest(
+  projectId: string,
+  // status_id: number
+) {
+  return apiClient<PagedResponse<Milestone>>(`/projects/${projectId}/milestones`, {
+    method: "GET"
   });
 }

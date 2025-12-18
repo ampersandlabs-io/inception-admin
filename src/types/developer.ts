@@ -27,3 +27,14 @@ export interface DeveloperProfile {
     created_at: string;
     updated_at: string;
   }
+
+  export interface ActiveSquadResponse {
+    id: string;
+    developer_id: string;
+    role: string;
+    status: string;
+    assigned_at: string;
+    accepted_at: string;
+    completed_at: string,
+    developer: DeveloperProfile;
+  }
