@@ -1,15 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
-import { deleteProjectRequest, getDevelopersAssignedToProject, getProjectById, getProjects, publishProjectRequest, approveProjectRequest, updateProjectStatusRequest } from "@/services/projectService";
-import { DeveloperProfile, Project } from "@/types";
+import { deleteProjectRequest, getProjectById, getProjects, publishProjectRequest, updateProjectStatusRequest } from "@/services/projectService";
+import { Project } from "@/types";
 
-export function useProjects(page: number, pageSize: number, status?: string) {
+export function useProjects(page: number = 1, pageSize: number = 9, status?: string) {
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   
-  const [projectSquads, setProjectSquads] = useState<DeveloperProfile[]>([]);
-
   const [totalItems, setTotalItems] = useState(0);
 
   const fetchProjects = useCallback(async () => {
@@ -40,18 +38,6 @@ export function useProjects(page: number, pageSize: number, status?: string) {
     }
   }, []);
 
-  const fetchDevelopersAssignedToProject = useCallback(async (projectId: string) => {
-    setLoading(true);
-    try {
-      const projectSquads = await getDevelopersAssignedToProject(projectId);
-      setProjectSquads(projectSquads);
-    } catch (error) {
-      console.error(`Failed to fetch squads for project with id ${projectId}:`, error);
-      setProjectSquads([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [])
 
   const publishProject = useCallback(async (projectId: string) => {
     try {
@@ -108,9 +94,6 @@ export function useProjects(page: number, pageSize: number, status?: string) {
     refreshProjects: fetchProjects,
     getProjectById: fetchProjectById,
   
-    projectSquads,
-    fetchDevelopersAssignedToProject,
-
     publishProject,
     approveProject,
     deleteProject,

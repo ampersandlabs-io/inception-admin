@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   XCircle,
@@ -12,9 +12,9 @@ import {
 } from "lucide-react"
 
 import { Project } from "@/types"
-import { useProjects } from "@/hooks/useProjects"
 import { formatCurrency } from "@/utils/util"
 import { useProjectBid } from "@/hooks/useProjectBid"
+import { useProjectSquad } from "@/hooks/useProjectSquad"
 
 interface SquadTabProps {
   project: Project
@@ -25,16 +25,12 @@ export function SquadTab({ project }: SquadTabProps) {
   const [activeSection, setActiveSection] = useState('Bids')
 
   // Real bidding data from API
-  const { projectSquads, fetchDevelopersAssignedToProject, loading } = useProjects()
+  const { projectSquads, loading } = useProjectSquad(project.id);
 
   const { projectBids, loading: isLoadingBids, bidsError } = useProjectBid(project.id);
 
   // const acceptBidMutation = useAcceptBid()
   // const rejectBidMutation = useRejectBid()
-
-  useEffect(() => {
-    fetchDevelopersAssignedToProject(project.id)
-  }, [fetchDevelopersAssignedToProject, project.id])
 
   // Real active squad data from API
 
@@ -123,10 +119,10 @@ export function SquadTab({ project }: SquadTabProps) {
                         </div>
                         <div>
                           <h4 className="font-semibold text-[#2b3674] text-lg">
-                            {squad.first_name}
+                            {squad.developer.first_name} {squad.developer.last_name}
                           </h4>
                           <p className="text-sm text-[#8f9bba]">
-                            {squad.role_name} • {squad.experience_level}
+                            {squad.role} • {squad.developer.years_experience}
                           </p>
                         </div>
                       </div>
@@ -144,12 +140,12 @@ export function SquadTab({ project }: SquadTabProps) {
                         <DollarSign className="h-4 w-4 text-[#4318ff]" />
                         <span className="text-sm text-[#8f9bba]">Rate:</span>
                         <span className="font-semibold text-[#2b3674]">
-                          {formatCurrency(squad.hourly_rate)}/hour
+                          {formatCurrency(squad.developer.hourly_rate || 0)}/hour
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4 text-[#4318ff]" />
-                        <span className="text-sm text-[#8f9bba]">Joined:</span>
+                        <span className="text-sm text-[#8f9bba]">Assigned:</span>
                         <span className="font-semibold text-[#2b3674]">
                           {new Date(squad.assigned_at).toLocaleDateString()}
                         </span>
@@ -163,18 +159,18 @@ export function SquadTab({ project }: SquadTabProps) {
                       </div>
                     </div>
 
-                    {squad.bio && (
+                    {squad.developer.bio && (
                       <div className="mb-4">
                         <span className="text-sm font-medium text-[#2b3674]">Bio:</span>
                         <p className="text-[#8f9bba] text-sm leading-relaxed mt-1">{squad.bio}</p>
                       </div>
                     )}
 
-                    {squad.tech_stacks && squad.tech_stacks.length > 0 && (
+                    {squad.developer.tech_stacks && squad.developer.tech_stacks.length > 0 && (
                       <div className="mb-4">
                         <span className="text-sm font-medium text-[#2b3674]">Tech Stack:</span>
                         <div className="flex flex-wrap gap-2 mt-2">
-                          {squad.tech_stacks.map((tech, index) => (
+                          {squad.developer.tech_stacks.map((tech, index) => (
                             <span
                               key={index}
                               className="px-2 py-1 bg-[#f8f9ff] text-[#4318ff] text-xs rounded-full border border-[#e0e5f2]"

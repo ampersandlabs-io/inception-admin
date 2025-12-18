@@ -1,15 +1,15 @@
 import { useProjects } from "@/hooks/useProjects";
 import { Calendar, Clock, Coins } from "lucide-react";
 import { useEffect, useState } from "react";
-import { DocumentsTab } from "./tabs/documents-tab";
-import { TeamTab } from "./tabs/team-tab";
-import { MilestonesTab } from "./tabs/milestones-tab";
-import { SquadTab } from "./tabs/squad-tab";
-import { OverviewTab } from "./tabs/overview-tab";
+import { DocumentsTab } from "./tabs/documents/documents-tab";
+import { TeamTab } from "./tabs/team/team-tab";
+import { MilestonesTab } from "./tabs/milestones/milestones-tab";
+import { SquadTab } from "./tabs/squad/squad-tab";
+import { OverviewTab } from "./tabs/overview/overview-tab";
 import { DEFAULT_CURRENCY } from "@/constants";
 import { formatBudget, formatDate } from "@/utils/util";
 import { ProjectStatus } from "./project-status";
-import { SettingsTab } from "./tabs/settings-tab";
+import { SettingsTab } from "./tabs/settings/settings-tab";
 
 interface ProjectDetailsProps {
   projectId: string;
